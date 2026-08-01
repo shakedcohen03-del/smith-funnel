@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>השאלון של סמית | תוכנית אישית ב-60 שניות</title>
+<meta name="description" content="7 שאלות קצרות, ובסוף מחכה לך תוכנית פעולה אישית לחיטוב והרזיה, בנויה לפי החיים האמיתיים שלך. מתנה מסמית.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="השאלון של סמית | תוכנית אישית ב-60 שניות">
+<meta property="og:description" content="ענה על 7 שאלות קצרות וקבל תוכנית פעולה אישית לחיטוב, בנויה לפי השגרה שלך. מתנה מסמית.">
+<meta property="og:image" content="https://crmsmith.uk/funnel-og.jpg">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://crmsmith.uk/funnel-og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c1210'/%3E%3Cpath d='M36 10 18 38h11l-3 16 20-30H34l2-14z' fill='%2334e27f'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="assets/smith.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c1210;
+    --bg-soft: #111a16;
+    --card: #141f1a;
+    --line: rgba(255,255,255,.09);
+    --text: #f4f3ee;
+    --muted: #a8b3ac;
+    --accent: #34e27f;
+    --accent-deep: #1fbf64;
+    --accent-ink: #06130b;
+    --danger: #ff7a6b;
+    --radius: 18px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Heebo', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+  /* גרעון עדין על כל הדף - הורג את המראה הסטרילי */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    opacity: .05;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .glow {
+    position: fixed;
+    width: 70vmax; height: 70vmax;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: .14;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-a { background: var(--accent); top: -35vmax; inset-inline-start: -20vmax; }
+  .glow-b { background: #1b7a4b; bottom: -40vmax; inset-inline-end: -25vmax; opacity: .12; }
+
+  .shell { position: relative; z-index: 1; width: 100%; max-width: 640px; margin: 0 auto; padding: 0 22px; display: flex; flex-direction: column; flex: 1; }
+  .screen { display: none; min-height: 100dvh; flex-direction: column; }
+  .screen.active { display: flex; animation: rise .45s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .screen.active, .opt, .an-row, .plan-card { animation: none !important; transition: none !important; }
+  }
+
+  /* ── מסך פתיחה ─────────────────────────────── */
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 20px 0 0; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: linear-gradient(145deg, #16241d, #0e1713);
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    color: var(--accent); font-weight: 900; font-size: 17px;
+  }
+  .brand-name { font-weight: 800; font-size: 15px; letter-spacing: .4px; }
+  .brand-sub { font-size: 11.5px; color: var(--muted); margin-top: -3px; }
+  .ig-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 44px;
+    font-size: 12.5px; color: var(--muted); text-decoration: none;
+    border: 1px solid var(--line); border-radius: 99px; padding: 7px 15px;
+    transition: color .2s, border-color .2s;
+  }
+  .ig-chip:active, .ig-chip:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
+
+  .hero { padding: 34px 0 20px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(52,226,127,.09);
+    border: 1px solid rgba(52,226,127,.25);
+    color: var(--accent);
+    font-size: 12.5px; font-weight: 700;
+    border-radius: 99px; padding: 7px 14px;
+  }
+  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  h1 {
+    font-size: clamp(34px, 9vw, 50px);
+    font-weight: 900; line-height: 1.13;
+    letter-spacing: -0.5px;
+    margin: 18px 0 14px;
+  }
+  .hl { position: relative; white-space: nowrap; }
+  .hl b { position: relative; z-index: 1; color: var(--accent-ink); font-weight: 900; padding: 0 4px; }
+  .hl::before {
+    content: ""; position: absolute; inset: 8% -2% 4%;
+    background: var(--accent);
+    border-radius: 6px;
+    transform: rotate(-1.2deg);
+  }
+  .hero-sub { color: var(--muted); font-size: 17px; max-width: 34ch; }
+  .hero-sub strong { color: var(--text); font-weight: 700; }
+
+  .hero-media { position: relative; margin: 30px 0 4px; }
+  .hero-photo {
+    width: min(78%, 340px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.14);
+    display: block;
+    transform: rotate(1.6deg);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.65);
+  }
+  .hero-quote {
+    position: absolute;
+    inset-inline-end: 0;
+    bottom: -14px;
+    max-width: 250px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 13px 16px;
+    font-size: 13.5px;
+    box-shadow: 0 18px 40px -18px rgba(0,0,0,.7);
+    transform: rotate(-1deg);
+    pointer-events: none;
+  }
+  .hero-quote b { color: var(--accent); }
+  .hero-quote span { display: block; color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+
+  .stats { display: flex; gap: 10px; margin: 34px 0 8px; }
+  .stat {
+    flex: 1;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .stat b { display: block; font-size: 16.5px; font-weight: 800; color: var(--text); }
+  .stat span { font-size: 11.5px; color: var(--muted); }
+
+  .btn {
+    appearance: none; border: none; cursor: pointer;
+    font-family: inherit;
+    width: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+    color: var(--accent-ink);
+    font-size: 18px; font-weight: 800;
+    border-radius: 16px;
+    padding: 17px 20px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 14px 34px -12px rgba(52,226,127,.45);
+    transition: transform .15s, box-shadow .15s, filter .15s;
+  }
+  .btn:active { transform: scale(.975); filter: brightness(.95); }
+  .btn[disabled] { opacity: .6; pointer-events: none; }
+  .btn svg { transition: transform .2s; }
+  .btn:hover svg { transform: translateX(-4px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    box-shadow: none;
+    font-weight: 700;
+  }
+  .cta-note { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 12px; }
+
+  .proof { padding: 30px 0 40px; }
+  .proof h2 { font-size: 21px; font-weight: 800; margin-bottom: 4px; }
+  .proof p { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+  .proof-row {
+    display: flex; gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
+    margin: 0 -22px; padding-inline: 22px;
+    scrollbar-width: none;
+  }
+  .proof-row::-webkit-scrollbar { display: none; }
+  .proof-card {
+    flex: 0 0 205px;
+    scroll-snap-align: start;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--card);
+    position: relative;
+  }
+  .proof-card img { width: 100%; height: 265px; object-fit: cover; object-position: center; display: block; }
+  .proof-tag {
+    position: absolute; top: 10px; inset-inline-start: 10px;
+    background: rgba(6,19,11,.82);
+    backdrop-filter: blur(4px);
+    color: var(--accent);
+    font-size: 11.5px; font-weight: 800;
+    padding: 5px 10px; border-radius: 99px;
+    border: 1px solid rgba(52,226,127,.35);
+  }
+  .hero-cta-wrap { position: sticky; bottom: 0; padding: 14px 0 calc(22px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(0deg, var(--bg) 62%, transparent); z-index: 3; }
+
+  /* ── שאלון ─────────────────────────────────── */
+  .quiz-top { padding: 18px 0 6px; }
+  .quiz-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .back-btn {
+    appearance: none; background: var(--bg-soft); border: 1px solid var(--line);
+    color: var(--muted); border-radius: 12px; width: 44px; height: 44px;
+    display: grid; place-items: center; cursor: pointer; font-family: inherit;
+    transition: color .2s, border-color .2s;
+  }
+  .back-btn:active { color: var(--text); border-color: rgba(255,255,255,.3); }
+  .back-btn[data-hidden="1"] { visibility: hidden; }
+  .step-count { font-size: 13.5px; color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .step-count b { color: var(--accent); }
+  .track { height: 6px; background: var(--bg-soft); border-radius: 99px; overflow: hidden; border: 1px solid var(--line); }
+  .track-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+    border-radius: 99px;
+    transition: width .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .q-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 26px 0 40px; }
+  .q-kicker { color: var(--accent); font-weight: 700; font-size: 13.5px; margin-bottom: 8px; }
+  .q-title { font-size: clamp(24px, 6.4vw, 32px); font-weight: 900; line-height: 1.25; margin-bottom: 26px; }
+  .opts { display: flex; flex-direction: column; gap: 11px; }
+  .opt {
+    appearance: none; cursor: pointer; font-family: inherit; text-align: start;
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 18px;
+    color: var(--text);
+    font-size: 16.5px; font-weight: 500;
+    transition: border-color .18s, background .18s, transform .12s;
+    animation: rise .4s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .opt:nth-child(2) { animation-delay: .05s; }
+  .opt:nth-child(3) { animation-delay: .1s; }
+  .opt:nth-child(4) { animation-delay: .15s; }
+  .opt:active { transform: scale(.985); }
+  .opt.picked { border-color: var(--accent); background: rgba(52,226,127,.08); }
+  .opt-emoji {
+    flex: 0 0 42px; height: 42px;
+    display: grid; place-items: center;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 20px;
+  }
+  .opt.picked .opt-emoji { border-color: rgba(52,226,127,.4); }
+
+  /* ── מסך ניתוח ─────────────────────────────── */
+  .analyze { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 0; }
+  .an-ring {
+    width: 84px; height: 84px; border-radius: 50%;
+    border: 3px solid var(--line);
+    border-top-color: var(--accent);
+    animation: spin 1s linear infinite;
+    margin-bottom: 30px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .analyze h2 { font-size: 24px; font-weight: 900; margin-bottom: 22px; }
+  .an-rows { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .an-row { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 15.5px; animation: rise .4s both; }
+  .an-row .tick { color: var(--accent); font-weight: 900; }
+
+  /* ── טופס פרטים ────────────────────────────── */
+  .gate { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px 0 44px; }
+  .gate-badge {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: rgba(52,226,127,.1);
+    border: 1.5px solid rgba(52,226,127,.4);
+    display: grid; place-items: center;
+    margin-bottom: 18px;
+  }
+  .gate h2 { font-size: clamp(26px, 7vw, 34px); font-weight: 900; line-height: 1.2; margin-bottom: 10px; }
+  .gate > p { color: var(--muted); font-size: 15.5px; margin-bottom: 20px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .chip {
+    font-size: 12.5px; font-weight: 700;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 7px 12px; border-radius: 99px;
+  }
+  .chip b { color: var(--accent); font-weight: 800; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); margin-bottom: 7px; }
+  .field input[type=text], .field input[type=tel] {
+    width: 100%;
+    font-family: inherit; font-size: 17px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 15px 16px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .field input:focus { border-color: rgba(52,226,127,.55); }
+  .field input.err { border-color: var(--danger); }
+  .field-err { display: none; color: var(--danger); font-size: 12.5px; margin-top: 6px; }
+  .field-err.show { display: block; }
+  .hp-field { position: absolute; inset-inline-start: -9999px; opacity: 0; height: 0; overflow: hidden; }
+  .consent { display: flex; gap: 11px; align-items: flex-start; margin: 18px 0 20px; cursor: pointer; }
+  .consent input { position: absolute; opacity: 0; pointer-events: none; }
+  .consent .box {
+    flex: 0 0 24px; height: 24px; margin-top: 1px;
+    border-radius: 8px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    display: grid; place-items: center;
+    transition: background .15s, border-color .15s;
+  }
+  .consent .box svg { opacity: 0; transform: scale(.5); transition: all .15s; }
+  .consent input:checked + .box { background: var(--accent); border-color: var(--accent); }
+  .consent input:checked + .box svg { opacity: 1; transform: scale(1); }
+  .consent.err .box { border-color: var(--danger); }
+  .consent p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .consent p b { color: var(--text); font-weight: 700; }
+  .send-err {
+    display: none;
+    background: rgba(255,122,107,.08);
+    border: 1px solid rgba(255,122,107,.35);
+    color: var(--danger);
+    font-size: 13.5px;
+    border-radius: 12px;
+    padding: 11px 14px;
+    margin-bottom: 14px;
+  }
+  .send-err.show { display: block; }
+  .send-err a { color: var(--text); font-weight: 700; }
+  .privacy-note { text-align: center; color: var(--muted); font-size: 12px; margin-top: 13px; }
+
+  /* ── תוצאה ─────────────────────────────────── */
+  .result { padding: 26px 0 50px; }
+  .result-head { text-align: center; margin-bottom: 26px; }
+  .result-head .gate-badge { margin: 0 auto 16px; }
+  .result-head .kicker { color: var(--accent); font-weight: 800; font-size: 13.5px; letter-spacing: .5px; }
+  .result-head h2 { font-size: clamp(27px, 7.4vw, 36px); font-weight: 900; line-height: 1.2; margin: 8px 0 6px; }
+  .result-head p { color: var(--muted); font-size: 15px; }
+  .archetype {
+    background: linear-gradient(135deg, rgba(52,226,127,.13), rgba(52,226,127,.03));
+    border: 1px solid rgba(52,226,127,.3);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .archetype .ico { font-size: 30px; }
+  .archetype small { display: block; color: var(--muted); font-size: 12.5px; font-weight: 700; }
+  .archetype b { font-size: 19px; font-weight: 900; }
+  .plan-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    animation: rise .45s both;
+  }
+  .plan-card .pc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .plan-card .pc-ico {
+    flex: 0 0 40px; height: 40px;
+    background: rgba(52,226,127,.1);
+    border: 1px solid rgba(52,226,127,.25);
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 19px;
+  }
+  .plan-card h3 { font-size: 16.5px; font-weight: 800; }
+  .plan-card p { color: #cdd5cf; font-size: 15px; line-height: 1.65; }
+  .plan-bonus { border-color: rgba(52,226,127,.35); background: linear-gradient(160deg, #15241c, #101a15); }
+  .next-card {
+    background: var(--bg-soft);
+    border: 1px dashed rgba(52,226,127,.4);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 24px 0;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .next-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(52,226,127,.5); }
+  .next-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
+  .next-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .next-card p b { color: var(--text); }
+
+  footer { text-align: center; color: #5f6a63; font-size: 12px; padding: 10px 0 34px; }
+  footer a { color: #8a958d; text-decoration: none; }
+
+  @media (min-width: 720px) {
+    .hero-photo { width: 320px; }
+    .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 26px; align-items: center; }
+    .hero-media { margin-top: 0; }
+    .shell { max-width: 760px; }
+    .quiz-shell, .gate-shell, .result-shell { max-width: 600px; margin: 0 auto; width: 100%; }
+    .hero-cta-wrap { position: static; background: none; max-width: 460px; margin: 0 auto; }
+    .proof-row { justify-content: center; }
+    .proof-card { flex-basis: 225px; }
+  }
+</style>
+</head>
+<body>
+<div class="glow glow-a"></div>
+<div class="glow glow-b"></div>
+
+<!-- ═══ מסך פתיחה ═══ -->
+<section class="screen active" id="s-hero">
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand-name">MR SMITH</div>
+          <div class="brand-sub">חיטוב והרזיה לגברים · אונליין</div>
+        </div>
+      </div>
+      <a class="ig-chip" href="https://instagram.com/mrsmith.fit" target="_blank" rel="noopener"><span dir="ltr">@mrsmith.fit</span></a>
+    </div>
+
+    <div class="hero">
+      <div>
+        <span class="hero-badge"><span class="dot"></span> 60 שניות · 7 שאלות · בחינם</span>
+        <h1>בוא נגלה למה הגוף שלך <span class="hl"><b>תקוע</b></span>, ומה עושים עם זה</h1>
+        <p class="hero-sub">ענה על 7 שאלות קצרות על השגרה שלך, ובסוף מחכה לך <strong>תוכנית פעולה אישית</strong> שבנויה על החיים האמיתיים שלך. בלי קסמים, בלי דיאטות רעב.</p>
+        <div class="stats">
+          <div class="stat"><b>16K+</b><span>קהילה באינסטגרם</span></div>
+          <div class="stat"><b>1:1</b><span>ליווי אישי צמוד</span></div>
+          <div class="stat"><b>מוסמך</b><span>מאמן כושר</span></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img class="hero-photo" src="assets/smith.jpg" alt="סמית, מאמן כושר">
+        <div class="hero-quote">"הגברים שמצליחים אצלי הם לא אלה עם הכי הרבה זמן. הם אלה עם תוכנית שמתאימה להם."<b> סמית</b><span>מאמן ומלווה אונליין</span></div>
+      </div>
+    </div>
+
+    <div class="proof">
+      <h2>תוצאות של מתאמנים אמיתיים</h2>
+      <p>מהעמוד של סמית. גברים עסוקים, בדיוק כמוך.</p>
+      <div class="proof-row">
+        <div class="proof-card"><span class="proof-tag">ירד 25 קילו</span><img src="assets/result-1.jpg" alt="לפני ואחרי של מתאמן" loading="lazy"></div>
+        <div class="proof-card"><span class="proof-tag">שינוי תוך חודשים</span><img src="assets/result-2.jpg" alt="לפני ואחרי של מתאמן" loading="lazy"></div>
+        <div class="proof-card"><span class="proof-tag">גוף החלומות שלו</span><img src="assets/result-3.jpg" alt="לפני ואחרי של מתאמן" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="hero-cta-wrap">
+      <button class="btn" id="start-btn">
+        אני רוצה את התוכנית שלי
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="cta-note">בלי עלות ובלי התחייבות. התוכנית נבנית לפי התשובות שלך.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ שאלון ═══ -->
+<section class="screen" id="s-quiz">
+  <div class="shell quiz-shell">
+    <div class="quiz-top">
+      <div class="quiz-meta">
+        <button class="back-btn" id="back-btn" aria-label="חזרה לשאלה הקודמת">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="step-count">שאלה <b id="step-now">1</b> מתוך <span id="step-total">7</span></div>
+      </div>
+      <div class="track"><div class="track-fill" id="track-fill"></div></div>
+    </div>
+    <div class="q-wrap">
+      <div class="q-kicker" id="q-kicker"></div>
+      <div class="q-title" id="q-title"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ניתוח ═══ -->
+<section class="screen" id="s-analyze">
+  <div class="shell quiz-shell">
+    <div class="analyze">
+      <div class="an-ring"></div>
+      <h2>סמית מרכיב לך את התוכנית</h2>
+      <div class="an-rows">
+        <div class="an-row" style="animation-delay:.2s"><span class="tick">✓</span> מנתח את התשובות שלך</div>
+        <div class="an-row" style="animation-delay:.9s"><span class="tick">✓</span> מתאים אסטרטגיית אימונים לשגרה שלך</div>
+        <div class="an-row" style="animation-delay:1.6s"><span class="tick">✓</span> בונה את תוכנית הפעולה האישית</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ טופס פרטים ═══ -->
+<section class="screen" id="s-form">
+  <div class="shell gate-shell">
+    <div class="gate">
+      <div class="gate-badge">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#34e27f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>התוכנית שלך מוכנה</h2>
+      <p>לאן לשלוח לך אותה? השאר פרטים ונפתח לך אותה מיד. סמית גם עובר אישית על כל שאלון ושולח המשך מותאם.</p>
+      <div class="chips" id="sum-chips"></div>
+      <form id="lead-form" novalidate>
+        <div class="hp-field" aria-hidden="true">
+          <label>נא להשאיר ריק<input type="text" name="hp_field" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <div class="field">
+          <label for="f-name">השם שלך</label>
+          <input type="text" id="f-name" name="name" autocomplete="name" placeholder="שם מלא">
+          <div class="field-err" id="err-name">כתוב שם של לפחות 2 תווים</div>
+        </div>
+        <div class="field">
+          <label for="f-phone">נייד (לשליחת ההמשך בוואטסאפ)</label>
+          <input type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" dir="ltr" style="text-align: right;">
+          <div class="field-err" id="err-phone">הכנס מספר נייד ישראלי תקין</div>
+        </div>
+        <label class="consent" id="consent-wrap">
+          <input type="checkbox" id="f-consent">
+          <span class="box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#06130b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <p><b>אני מאשר לקבל מסמית תוכן, טיפים ועדכונים שיווקיים</b> בוואטסאפ, במייל או בהודעות. אפשר לבטל את ההסכמה בכל רגע, בלי שאלות.</p>
+        </label>
+        <div class="field-err" id="err-consent" style="margin: -10px 0 16px;">כדי שנוכל לשלוח לך את התוכנית וההמשך, צריך לסמן את האישור</div>
+        <div class="send-err" id="send-err"></div>
+        <button class="btn" type="submit" id="submit-btn">
+          פתח לי את התוכנית
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+      <div class="privacy-note">הפרטים שלך נשמרים אצל סמית בלבד ולא מועברים לאף גורם אחר.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ תוצאה ═══ -->
+<section class="screen" id="s-result">
+  <div class="shell result-shell">
+    <div class="result">
+      <div class="result-head">
+        <div class="gate-badge">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z" fill="#34e27f"/></svg>
+        </div>
+        <div class="kicker">המתנה שלך מסמית</div>
+        <h2 id="result-title">תוכנית הפעולה שלך</h2>
+        <p>בנויה לפי 7 התשובות שלך. קצרה, ישימה, ומתחילה השבוע.</p>
+      </div>
+      <div class="archetype">
+        <span class="ico">🎯</span>
+        <div>
+          <small>הפרופיל שלך</small>
+          <b id="archetype-text"></b>
+        </div>
+      </div>
+      <div id="plan-cards"></div>
+      <div class="next-card">
+        <img src="assets/smith.jpg" alt="סמית">
+        <div>
+          <h3>מה עכשיו?</h3>
+          <p>רוב הגברים שעונים תשובות כמו שלך לא צריכים עוד מידע. הם צריכים <b>מערכת שמתאימה לחיים שלהם</b>, וזה בדיוק מה שסמית בונה. שמור על הנייד קרוב: סמית עובר אישית על השאלונים ושולח המשך מותאם, בגובה העיניים ובלי לחץ.</p>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="https://instagram.com/mrsmith.fit" target="_blank" rel="noopener" style="text-decoration:none">בינתיים, בוא לעקוב אחרי סמית באינסטגרם</a>
+      <footer><span dir="ltr">© MR SMITH · <a href="https://instagram.com/mrsmith.fit" target="_blank" rel="noopener">mrsmith.fit</a></span></footer>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  var API_URL = "https://crmsmith.uk/api/funnel/lead";
+  var IG_URL = "https://ig.me/m/mrsmith.fit";
+
+  /* ── שאלות ── */
+  var QUESTIONS = [
+    {
+      key: "goal",
+      kicker: "בוא נתחיל מהכיוון",
+      title: "מה המטרה המרכזית שלך עכשיו?",
+      opts: [
+        { k: "a", e: "🔥", t: "להוריד את הבטן ולהתחטב" },
+        { k: "b", e: "⚖️", t: "לרדת משמעותית במשקל" },
+        { k: "c", e: "💪", t: "לבנות שריר ולהתחזק" },
+        { k: "d", e: "🔄", t: "לחזור לכושר אחרי הפסקה ארוכה" }
+      ]
+    },
+    {
+      key: "age",
+      kicker: "כדי לדייק את ההמלצות",
+      title: "בן כמה אתה?",
+      opts: [
+        { k: "a", e: "🧑", t: "18 עד 29" },
+        { k: "b", e: "👨", t: "30 עד 39" },
+        { k: "c", e: "🧔", t: "40 עד 49" },
+        { k: "d", e: "👨‍🦳", t: "50 ומעלה" }
+      ]
+    },
+    {
+      key: "routine",
+      kicker: "החיים האמיתיים שלך",
+      title: "מה הכי מתאר את השגרה שלך?",
+      opts: [
+        { k: "a", e: "💼", t: "עבודה תובענית ושעות ארוכות" },
+        { k: "b", e: "👨‍👧‍👦", t: "אבא לילדים, אין רגע שקט" },
+        { k: "c", e: "🤯", t: "גם וגם, הכל ביחד" },
+        { k: "d", e: "🧭", t: "דווקא יש לי זמן, חסר לי כיוון" }
+      ]
+    },
+    {
+      key: "freq",
+      kicker: "בלי להתבייש, באמת",
+      title: "כמה אימונים יוצאים לך בפועל בשבוע?",
+      opts: [
+        { k: "a", e: "😅", t: "אפס כרגע" },
+        { k: "b", e: "🚶", t: "אחד או שניים" },
+        { k: "c", e: "🏃", t: "שלושה או ארבעה" },
+        { k: "d", e: "🏋️", t: "חמישה ומעלה" }
+      ]
+    },
+    {
+      key: "struggle",
+      kicker: "כאן רוב הגברים נופלים",
+      title: "מה הדבר שהכי מפיל אותך?",
+      opts: [
+        { k: "a", e: "🍫", t: "נשנושים והאוכל של הערב" },
+        { k: "b", e: "📉", t: "התמדה. מתחיל חזק ונשבר" },
+        { k: "c", e: "🎯", t: "אין תוכנית ברורה, יורה לכל הכיוונים" },
+        { k: "d", e: "🔋", t: "עייפות ואפס אנרגיה" }
+      ]
+    },
+    {
+      key: "food",
+      kicker: "רגע האמת",
+      title: "איך נראית התזונה שלך היום?",
+      opts: [
+        { k: "a", e: "🥗", t: "מסודרת יחסית, אבל אין תוצאות" },
+        { k: "b", e: "🌙", t: "מדלג על ארוחות ובערב זה מתפרק" },
+        { k: "c", e: "🍔", t: "הרבה אוכל בחוץ ואוכל מהיר" },
+        { k: "d", e: "🤷", t: "אין לי מושג כמה אני אוכל" }
+      ]
+    },
+    {
+      key: "time",
+      kicker: "שאלה אחרונה",
+      title: "כמה זמן אמיתי יש לך ביום לעצמך?",
+      opts: [
+        { k: "a", e: "⏱️", t: "עד 20 דקות" },
+        { k: "b", e: "⏲️", t: "30 עד 45 דקות" },
+        { k: "c", e: "🕐", t: "שעה ומעלה" },
+        { k: "d", e: "🎲", t: "משתנה מיום ליום" }
+      ]
+    }
+  ];
+
+  /* ── תוכן התוכנית ── */
+  var ARCH_PREFIX = { a: "מקצוען עסוק", b: "אבא עסוק", c: "גבר שמנהל הכל בבת אחת", d: "גבר שמוכן לשינוי" };
+  var ARCH_MODE = { a: "במוד חיטוב", b: "במוד שריפת שומן", c: "במוד בניית כוח", d: "במוד קאמבק" };
+
+  var TRAIN = {
+    a: "אימונים קצרים של 15 עד 20 דקות, שלוש פעמים בשבוע, בבית או בחדר כושר: תרגילים מורכבים בלבד כמו סקוואט, לחיצות ומשיכות. בשגרה כמו שלך, אימון קצר שקורה מנצח אימון מושלם שלא קורה.",
+    b: "שלושה אימוני כוח של 30 עד 45 דקות בשבוע, בנויים סביב תרגילים מורכבים עם עומס שעולה בהדרגה. זה בדיוק החלון שמספיק לשריפת שומן ובניית שריר, בלי לחיות בחדר כושר.",
+    c: "יש לך זמן, אז המפתח הוא תכנון חכם: ארבעה אימוני כוח בשבוע בפיצול עליון ותחתון, ועוד 8,000 עד 10,000 צעדים ביום. עומס שעולה משבוע לשבוע לפי תוכנית, לא לפי מצב רוח.",
+    d: "כשהשגרה משתנה, התוכנית חייבת להיות גמישה: קבע שני אימוני עוגן קבועים בשבוע שלא זזים, ואימון בונוס כשמתאפשר. עוגנים קבועים שורדים גם את השבועות המטורפים."
+  };
+  // מי שכרגע על אפס או מי שכבר מתאמן הרבה מקבל טקסט ייעודי מלא,
+  // כדי שלא ייווצר ניגוד בין הפתיח לגוף ההמלצה
+  var TRAIN_RESTART = "מתחילים בהדרגה, בלי להעניש את הגוף: בשבועיים הראשונים רק שני אימונים קצרים בשבוע והליכה יומית. אחרי שההרגל מתייצב, מעלים בהדרגה לפי הזמן שבאמת יש לך. המטרה עכשיו היא רצף, לא שיא.";
+  var TRAIN_ADVANCED = "אתה כבר מתאמן הרבה, אז אצלך המפתח הוא לא עוד אימונים אלא תכנון: פיצול חכם בין קבוצות שרירים, עומס שעולה לפי תוכנית, ושבוע קל אחת לחודש להתאוששות. לפעמים פחות זה יותר.";
+
+  var FOOD = {
+    a: "התזונה שלך מסודרת אבל כנראה לא מדויקת לך: נכנסות יותר קלוריות ממה שהגוף שורף, גם כשהאוכל בריא. שבוע אחד של מעקב פשוט אחרי הכמויות יחשוף את הפער. חלבון בכל ארוחה זה קו אדום.",
+    b: "הערב שלך מתפרק כי היום שלך רעב. ארוחת בוקר וצהריים עם חלבון אמיתי, כמו ביצים, טונה, עוף או קוטג', יחלישו את ההתקף של הלילה באופן טבעי. מהיום, לא מדלגים על ארוחות.",
+    c: "אוכל בחוץ זה לא גזירת גורל, זו מיומנות: מנה עם חלבון וירקות, רוטב בצד, מטוגן החוצה, וארוחה ביתית קבועה אחת ביום. שינוי של 20 אחוז בבחירות נותן 80 אחוז מהתוצאה.",
+    d: "הצעד הראשון שלך הוא מודעות, לא דיאטה: ארבעה ימים של רישום פשוט של כל מה שנכנס לפה, בלי לשנות כלום. תופתע לגלות איפה הקלוריות מתחבאות, ומשם בונים תוכנית אמיתית."
+  };
+
+  var OBSTACLE = {
+    a: "הנשנוש של הערב הוא כמעט תמיד תוצאה של יום לא מסודר, לא של חולשת אופי. הפתרון: ארוחת ערב אמיתית ומשביעה, ושעה קבועה שבה המטבח נסגר. בלי איסורים דרמטיים, רק סדר.",
+    b: "אתה לא צריך עוד מוטיבציה. אתה צריך תוכנית שקטנה מספיק כדי לשרוד גם שבוע גרוע. מתחילים ממינימום שאי אפשר להיכשל בו, ובונים מעליו. עקביות סבירה מנצחת שלמות זמנית, תמיד.",
+    c: "בדיוק בשביל זה ענית על השאלון: כשיש מסלול אחד ברור במקום אלף עצות מהאינטרנט, הראש נרגע והגוף מתחיל להגיב. תוכנית אחת, מדדים ברורים, אפס רעש.",
+    d: "אנרגיה נמוכה היא כמעט תמיד שילוב של שינה קצרה, תזונה קופצנית וחוסר תנועה. החדשות הטובות: דווקא אימון קצר מעלה אנרגיה. השבוע תתחיל מלישון 15 דקות מוקדם יותר, ומשם זה מתגלגל."
+  };
+
+  var FIRST_STEP = {
+    a: "שלוש ארוחות מסודרות ביום עם חלבון בכל אחת, שני אימוני כוח קצרים, ו-7,000 צעדים ביום. הבטן יורדת מגירעון קלורי עקבי, לא מכפיפות בטן.",
+    b: "שקילה פעם בשבוע, באותו יום ובאותה שעה, הוצאת השתייה המתוקה, והחלפת ארוחה אחת ביום בארוחה עשירה בחלבון. שינויים קטנים שמייצרים גירעון בלי להרגיש בסבל.",
+    c: "אימוני כוח עם דגש על תרגילים מורכבים, ותוספת חלבון בכל ארוחה. שריר נבנה משילוב של עומס עולה, חלבון ושינה, בסדר הזה.",
+    d: "שני אימונים קלים בלבד, בכוונה. המטרה השבוע היא להחזיר את ההרגל בלי פציעות ובלי כאבי שרירים משתקים. קאמבק אמיתי נבנה בהדרגה."
+  };
+
+  var BONUS = {
+    a: "בגיל שלך הגוף מגיב מהר, וזו חרב פיפיות: קל לרדת, אבל גם קל לדחות כי תמיד יש זמן. מי שבונה הרגלים עכשיו חי מהם 40 שנה קדימה.",
+    b: "העשור הזה הוא הצפוף בחיים: קריירה, זוגיות, ילדים. לכן מערכת מנצחת מוטיבציה. תוכנית שדורשת ממך כמה שפחות החלטות ביום היא זו שתחזיק לאורך זמן.",
+    c: "מגיל 40, שימור מסת שריר הוא המפתח: הוא שומר על חילוף חומרים גבוה, על הגב ועל הברכיים. אימוני כוח הם לא בונוס בגיל הזה, הם הבסיס.",
+    d: "בגיל שלך ההשקעה הכי משתלמת היא שילוב של אימוני כוח, חלבון מספק והליכה יומית. מתאמנים חכם, לא קשה, והגוף מחזיר באנרגיה ובבריאות."
+  };
+
+  /* ── state ── */
+  var state = { step: 0, answers: {}, submitted: false, failCount: 0 };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var screens = ["s-hero", "s-quiz", "s-analyze", "s-form", "s-result"];
+
+  function show(id) {
+    screens.forEach(function (s) { $(s).classList.remove("active"); });
+    $(id).classList.add("active");
+    window.scrollTo(0, 0);
+  }
+
+  /* היסטוריית דפדפן — כפתור back של המערכת מזיז שלב אחורה במקום לצאת מהאתר */
+  function nav(st) { try { history.pushState(st, ""); } catch (e) {} }
+  window.addEventListener("popstate", function (ev) {
+    if (analyzeTimer) { clearTimeout(analyzeTimer); analyzeTimer = null; }
+    var st = ev.state;
+    if (!st) { show("s-hero"); return; }
+    if (st.s === "quiz") {
+      state.step = Math.min(st.step || 0, QUESTIONS.length - 1);
+      show("s-quiz");
+      renderQuestion();
+    } else if (st.s === "form") {
+      buildSummaryChips();
+      restoreSubmitBtn();
+      show("s-form");
+    } else if (st.s === "result" && state.submitted) {
+      show("s-result");
+    } else {
+      show("s-hero");
+    }
+  });
+
+  /* ── שאלון ── */
+  function renderQuestion() {
+    var q = QUESTIONS[state.step];
+    $("step-now").textContent = state.step + 1;
+    $("step-total").textContent = QUESTIONS.length;
+    $("track-fill").style.width = ((state.step) / QUESTIONS.length * 100) + "%";
+    $("back-btn").dataset.hidden = state.step === 0 ? "1" : "0";
+    $("q-kicker").textContent = q.kicker;
+    $("q-title").textContent = q.title;
+
+    var box = $("opts");
+    box.innerHTML = "";
+    q.opts.forEach(function (o) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "opt" + (state.answers[q.key] === o.k ? " picked" : "");
+      btn.innerHTML = '<span class="opt-emoji">' + o.e + '</span><span>' + o.t + "</span>";
+      btn.addEventListener("click", function () { pick(q, o, btn); });
+      box.appendChild(btn);
+    });
+  }
+
+  var advancing = false;
+  function pick(q, o, btn) {
+    if (advancing) return;
+    advancing = true;
+    state.answers[q.key] = o.k;
+    Array.prototype.forEach.call($("opts").children, function (c) { c.classList.remove("picked"); });
+    btn.classList.add("picked");
+    setTimeout(function () {
+      advancing = false;
+      if (state.step < QUESTIONS.length - 1) {
+        state.step++;
+        nav({ s: "quiz", step: state.step });
+        renderQuestion();
+      } else {
+        $("track-fill").style.width = "100%";
+        startAnalyze();
+      }
+    }, 260);
+  }
+
+  $("back-btn").addEventListener("click", function () {
+    if (state.step > 0) { state.step--; nav({ s: "quiz", step: state.step }); renderQuestion(); }
+  });
+
+  $("start-btn").addEventListener("click", function () {
+    nav({ s: "quiz", step: 0 });
+    show("s-quiz");
+    renderQuestion();
+  });
+
+  /* ── ניתוח ── */
+  var analyzeTimer = null;
+  function startAnalyze() {
+    show("s-analyze");
+    analyzeTimer = setTimeout(function () {
+      analyzeTimer = null;
+      buildSummaryChips();
+      nav({ s: "form" });
+      show("s-form");
+    }, 2400);
+  }
+
+  function answerText(key) {
+    var q = QUESTIONS.filter(function (x) { return x.key === key; })[0];
+    if (!q) return "";
+    var k = state.answers[key];
+    var o = q.opts.filter(function (x) { return x.k === k; })[0];
+    return o ? o.t : "";
+  }
+
+  function buildSummaryChips() {
+    var chips = [
+      { l: "מטרה", v: answerText("goal") },
+      { l: "זמן ביום", v: answerText("time") },
+      { l: "האתגר", v: answerText("struggle") }
+    ];
+    $("sum-chips").innerHTML = chips
+      .filter(function (c) { return c.v; })
+      .map(function (c) { return '<span class="chip">' + c.l + ': <b>' + c.v + "</b></span>"; })
+      .join("");
+  }
+
+  /* ── טופס ── */
+  function normalizePhoneIL(raw) {
+    var digits = String(raw || "").replace(/\D/g, "");
+    digits = digits.replace(/^0{0,2}972/, "972");
+    if (digits.indexOf("972") === 0) digits = "0" + digits.slice(3).replace(/^0+/, "");
+    return digits;
+  }
+  function validPhoneIL(raw) {
+    return /^05\d{8}$/.test(normalizePhoneIL(raw));
+  }
+
+  function setFieldError(inputId, errId, on) {
+    $(inputId).classList.toggle("err", on);
+    $(errId).classList.toggle("show", on);
+  }
+
+  $("f-name").addEventListener("input", function () { setFieldError("f-name", "err-name", false); });
+  $("f-phone").addEventListener("input", function () { setFieldError("f-phone", "err-phone", false); });
+  $("f-consent").addEventListener("change", function () {
+    $("consent-wrap").classList.remove("err");
+    $("err-consent").classList.remove("show");
+  });
+
+  function collectAnswersForCrm() {
+    return QUESTIONS.map(function (q) {
+      return { q: q.title, a: answerText(q.key) };
+    });
+  }
+
+  function archetype() {
+    return (ARCH_PREFIX[state.answers.routine] || "גבר עסוק") + " " + (ARCH_MODE[state.answers.goal] || "במוד שינוי");
+  }
+
+  function postLead(payload, timeoutMs) {
+    return new Promise(function (resolve, reject) {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, timeoutMs);
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
+      }).then(function (res) {
+        clearTimeout(timer);
+        if (res.ok) resolve(true);
+        else reject(new Error("http_" + res.status));
+      }).catch(function (e) {
+        clearTimeout(timer);
+        reject(e);
+      });
+    });
+  }
+
+  function submitWithRetry(payload) {
+    return postLead(payload, 10000)
+      .catch(function () {
+        return new Promise(function (r) { setTimeout(r, 1200); })
+          .then(function () { return postLead(payload, 10000); });
+      })
+      .catch(function () {
+        return new Promise(function (r) { setTimeout(r, 2600); })
+          .then(function () { return postLead(payload, 12000); });
+      });
+  }
+
+  var submitBtnHtml = $("submit-btn").innerHTML;
+  function restoreSubmitBtn() {
+    var btn = $("submit-btn");
+    btn.disabled = false;
+    btn.innerHTML = submitBtnHtml;
+  }
+
+  $("lead-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (state.submitted) { showResult($("f-name").value.trim() || "חבר"); return; }
+
+    var name = $("f-name").value.trim();
+    var phone = $("f-phone").value;
+    var consent = $("f-consent").checked;
+    var ok = true;
+
+    if (name.length < 2) { setFieldError("f-name", "err-name", true); ok = false; }
+    if (!validPhoneIL(phone)) { setFieldError("f-phone", "err-phone", true); ok = false; }
+    if (!consent) {
+      $("consent-wrap").classList.add("err");
+      $("err-consent").classList.add("show");
+      ok = false;
+    }
+    if (!ok) return;
+
+    var btn = $("submit-btn");
+    btn.disabled = true;
+    btn.textContent = "רק רגע, שומר...";
+    $("send-err").classList.remove("show");
+
+    var payload = {
+      name: name,
+      phone: normalizePhoneIL(phone),
+      consent: true,
+      hp_field: document.querySelector('input[name="hp_field"]').value || "",
+      answers: collectAnswersForCrm(),
+      profile: archetype(),
+      channel: new URLSearchParams(location.search).get("src") || ""
+    };
+
+    submitWithRetry(payload)
+      .then(function () {
+        state.submitted = true;
+        restoreSubmitBtn();
+        showResult(name);
+      })
+      .catch(function () {
+        state.failCount++;
+        restoreSubmitBtn();
+        var err = $("send-err");
+        if (state.failCount >= 2) {
+          err.innerHTML = 'משהו השתבש בשמירה. אפשר לנסות שוב, או פשוט <a href="' + IG_URL + '" target="_blank" rel="noopener">לשלוח לסמית הודעה באינסטגרם</a> עם המילה "תוכנית" והוא יחזור אליך אישית.';
+        } else {
+          err.textContent = "לא הצלחנו לשמור את הפרטים. בדוק את החיבור לאינטרנט ונסה שוב.";
+        }
+        err.classList.add("show");
+      });
+  });
+
+  /* ── תוצאה ── */
+  function planCard(icon, title, text) {
+    return '<div class="plan-card"><div class="pc-head"><span class="pc-ico">' + icon +
+      '</span><h3>' + title + "</h3></div><p>" + text + "</p></div>";
+  }
+
+  function showResult(name) {
+    var a = state.answers;
+    var firstName = name.split(/\s+/)[0];
+    $("result-title").textContent = "התוכנית של " + firstName;
+    $("archetype-text").textContent = archetype();
+
+    var trainText = a.freq === "a" ? TRAIN_RESTART : a.freq === "d" ? TRAIN_ADVANCED : (TRAIN[a.time] || TRAIN.b);
+    var cards = "";
+    cards += planCard("🏋️", "האימונים שלך", trainText);
+    cards += planCard("🍽️", "התזונה שלך", FOOD[a.food] || FOOD.d);
+    cards += planCard("🧱", "המכשול המרכזי, ואיך עוקפים אותו", OBSTACLE[a.struggle] || OBSTACLE.c);
+    cards += planCard("📅", "הצעד הראשון שלך השבוע", FIRST_STEP[a.goal] || FIRST_STEP.a);
+    cards += '<div class="plan-card plan-bonus">' +
+      '<div class="pc-head"><span class="pc-ico">👑</span><h3>טיפ בונוס מסמית, בשבילך</h3></div>' +
+      "<p>" + (BONUS[a.age] || BONUS.b) + "</p></div>";
+    $("plan-cards").innerHTML = cards;
+    nav({ s: "result" });
+    show("s-result");
+  }
+})();
+</script>
+</body>
+</html>
