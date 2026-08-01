@@ -444,7 +444,7 @@
         <p class="hero-sub">ענה על 7 שאלות קצרות על השגרה שלך, ובסוף מחכה לך <strong>תוכנית פעולה אישית</strong> שבנויה על החיים האמיתיים שלך. בלי קסמים, בלי דיאטות רעב.</p>
         <div class="stats">
           <div class="stat"><b>16K+</b><span>קהילה באינסטגרם</span></div>
-          <div class="stat"><b>1:1</b><span>ליווי אישי צמוד</span></div>
+          <div class="stat"><b>אחד על אחד</b><span>ליווי אישי באונליין</span></div>
           <div class="stat"><b>מוסמך</b><span>מאמן כושר</span></div>
         </div>
       </div>
@@ -532,6 +532,11 @@
           <label for="f-phone">נייד (לשליחת ההמשך בוואטסאפ)</label>
           <input type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" dir="ltr" style="text-align: right;">
           <div class="field-err" id="err-phone">הכנס מספר נייד ישראלי תקין</div>
+        </div>
+        <div class="field">
+          <label for="f-email">אימייל (לשליחת התוכנית)</label>
+          <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder="name@gmail.com" dir="ltr" style="text-align: right;">
+          <div class="field-err" id="err-email">כתוב כתובת מייל תקינה</div>
         </div>
         <label class="consent" id="consent-wrap">
           <input type="checkbox" id="f-consent">
@@ -843,6 +848,9 @@
   function validPhoneIL(raw) {
     return /^05\d{8}$/.test(normalizePhoneIL(raw));
   }
+  function validEmail(raw) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(raw || "").trim());
+  }
 
   function setFieldError(inputId, errId, on) {
     $(inputId).classList.toggle("err", on);
@@ -851,6 +859,7 @@
 
   $("f-name").addEventListener("input", function () { setFieldError("f-name", "err-name", false); });
   $("f-phone").addEventListener("input", function () { setFieldError("f-phone", "err-phone", false); });
+  $("f-email").addEventListener("input", function () { setFieldError("f-email", "err-email", false); });
   $("f-consent").addEventListener("change", function () {
     $("consent-wrap").classList.remove("err");
     $("err-consent").classList.remove("show");
@@ -911,11 +920,13 @@
 
     var name = $("f-name").value.trim();
     var phone = $("f-phone").value;
+    var email = $("f-email").value.trim();
     var consent = $("f-consent").checked;
     var ok = true;
 
     if (name.length < 2) { setFieldError("f-name", "err-name", true); ok = false; }
     if (!validPhoneIL(phone)) { setFieldError("f-phone", "err-phone", true); ok = false; }
+    if (!validEmail(email)) { setFieldError("f-email", "err-email", true); ok = false; }
     if (!consent) {
       $("consent-wrap").classList.add("err");
       $("err-consent").classList.add("show");
@@ -931,6 +942,7 @@
     var payload = {
       name: name,
       phone: normalizePhoneIL(phone),
+      email: email,
       consent: true,
       hp_field: document.querySelector('input[name="hp_field"]').value || "",
       answers: collectAnswersForCrm(),
