@@ -424,6 +424,11 @@
   #cta-top { margin: 0 0 24px; }
   #cta-top .cta-note { margin-top: 10px; text-align: center; }
   #cta-top .send-err { margin-top: 12px; }
+  .serious { text-align: center; margin: 2px 0 16px; }
+  .serious p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+  .serious p b { color: var(--text); }
+  .serious-strong { color: var(--text); font-weight: 700; font-size: 16.5px; margin-top: 7px; }
+  .serious-hl { color: #ffb020; font-weight: 900; }
   .cta-note { color: var(--muted); font-size: 12.5px; margin-top: 13px; }
   .cta-success {
     background: rgba(52,226,127,.1);
@@ -617,6 +622,10 @@
         </div>
       </div>
       <div id="cta-top">
+        <div class="serious">
+          <p>למטה מחכים לך טיפים שנבנו לפי התשובות שלך, ואתה יכול ליישם אותם <b>כבר מהיום, בחינם</b>.</p>
+          <p class="serious-strong">אבל אם אתה רוצה לקחת את החיים שלך ברצינות, יש לנו אופציה שמיועדת <span class="serious-hl">לרציניים ביותר</span>:</p>
+        </div>
         <button class="btn btn-big btn-cta" id="cta-btn-top" type="button">אני רוצה ליווי יחד עם סמית</button>
         <div class="send-err" id="cta-err-top"></div>
         <div class="cta-note">בלי התחייבות. הצוות של סמית חוזר אליך אישית.</div>
