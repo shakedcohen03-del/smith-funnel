@@ -68,7 +68,7 @@
   .screen.active { display: flex; animation: rise .45s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .screen.active, .opt, .an-row, .plan-card, .btn-big, .cta-success { animation: none !important; transition: none !important; }
+    .screen.active, .opt, .an-row, .plan-card, .btn-big, .btn-cta, .cta-success { animation: none !important; transition: none !important; }
   }
 
   /* ── מסך פתיחה ─────────────────────────────── */
@@ -409,12 +409,21 @@
     font-size: 19.5px;
     font-weight: 900;
     padding: 21px 22px;
+  }
+  /* צבע ייחודי לכפתור הליווי — הכתום היחיד בדף, בולט מקסימלית על הרקע הירוק-כהה */
+  .btn-cta {
+    background: linear-gradient(180deg, #ffb020, #ff8a00);
+    color: #1c1204;
+    box-shadow: 0 14px 34px -12px rgba(255,150,0,.5);
     animation: ctaPulse 2.2s ease-in-out infinite;
   }
   @keyframes ctaPulse {
-    0%, 100% { box-shadow: 0 14px 34px -12px rgba(52,226,127,.45); }
-    50% { box-shadow: 0 18px 52px -8px rgba(52,226,127,.85); }
+    0%, 100% { box-shadow: 0 14px 34px -12px rgba(255,150,0,.45); }
+    50% { box-shadow: 0 18px 52px -8px rgba(255,150,0,.85); }
   }
+  #cta-top { margin: 0 0 24px; }
+  #cta-top .cta-note { margin-top: 10px; text-align: center; }
+  #cta-top .send-err { margin-top: 12px; }
   .cta-note { color: var(--muted); font-size: 12.5px; margin-top: 13px; }
   .cta-success {
     background: rgba(52,226,127,.1);
@@ -607,12 +616,17 @@
           <b id="archetype-text"></b>
         </div>
       </div>
+      <div id="cta-top">
+        <button class="btn btn-big btn-cta" id="cta-btn-top" type="button">אני רוצה ליווי יחד עם סמית</button>
+        <div class="send-err" id="cta-err-top"></div>
+        <div class="cta-note">בלי התחייבות. הצוות של סמית חוזר אליך אישית.</div>
+      </div>
       <div id="plan-cards"></div>
       <div class="cta-card" id="cta-card">
         <img src="assets/smith.jpg" alt="סמית">
         <h3>רוצה שנעשה את זה יחד?</h3>
         <p>התוכנית שלמעלה היא הכיוון. מה שהופך אותה לתוצאה זה <b>ליווי אישי ומערכת שמתאימים לחיים שלך</b>, וזה בדיוק מה שסמית עושה.</p>
-        <button class="btn btn-big" id="cta-btn" type="button">אני רוצה ליווי יחד עם סמית</button>
+        <button class="btn btn-big btn-cta" id="cta-btn" type="button">אני רוצה ליווי יחד עם סמית</button>
         <div class="send-err" id="cta-err"></div>
         <div class="cta-note">בלי התחייבות. לוחצים, והצוות של סמית חוזר אליך אישית.</div>
       </div>
@@ -993,26 +1007,24 @@
     };
   }
 
+  var CTA_TEXT = "אני רוצה ליווי יחד עם סמית";
+
   function renderCtaState() {
-    var card = $("cta-card");
-    var success = $("cta-success");
-    if (state.sent) {
-      card.hidden = true;
-      success.hidden = false;
-    } else {
-      card.hidden = false;
-      success.hidden = true;
-    }
+    var sent = state.sent;
+    $("cta-card").hidden = sent;
+    $("cta-top").hidden = sent;
+    $("cta-success").hidden = !sent;
   }
 
   var ctaSending = false;
-  $("cta-btn").addEventListener("click", function () {
+  function handleCtaClick(btn, errEl) {
     if (state.sent || ctaSending || !state.lead) return;
     ctaSending = true;
-    var btn = $("cta-btn");
-    btn.disabled = true;
+    var buttons = [$("cta-btn"), $("cta-btn-top")];
+    buttons.forEach(function (b) { b.disabled = true; });
     btn.textContent = "רק רגע, שולח...";
     $("cta-err").classList.remove("show");
+    $("cta-err-top").classList.remove("show");
 
     submitWithRetry(buildPayload())
       .then(function (res) {
@@ -1022,21 +1034,23 @@
             'הצוות שלנו יצור איתך קשר בקרוב.<br><b>טיפ: תציץ בוואטסאפ, סמית כבר שלח לך שם הודעה.</b>';
         }
         renderCtaState();
+        $("cta-success").scrollIntoView({ behavior: "smooth", block: "center" });
       })
       .catch(function () {
         state.failCount++;
-        btn.disabled = false;
-        btn.textContent = "אני רוצה ליווי יחד עם סמית";
-        var err = $("cta-err");
+        buttons.forEach(function (b) { b.disabled = false; b.textContent = CTA_TEXT; });
         if (state.failCount >= 2) {
-          err.innerHTML = 'משהו השתבש בשליחה. אפשר לנסות שוב, או פשוט <a href="' + IG_URL + '" target="_blank" rel="noopener">לשלוח לסמית הודעה באינסטגרם</a> עם המילה "ליווי" והוא יחזור אליך אישית.';
+          errEl.innerHTML = 'משהו השתבש בשליחה. אפשר לנסות שוב, או פשוט <a href="' + IG_URL + '" target="_blank" rel="noopener">לשלוח לסמית הודעה באינסטגרם</a> עם המילה "ליווי" והוא יחזור אליך אישית.';
         } else {
-          err.textContent = "לא הצלחנו לשלוח. בדוק את החיבור לאינטרנט ונסה שוב.";
+          errEl.textContent = "לא הצלחנו לשלוח. בדוק את החיבור לאינטרנט ונסה שוב.";
         }
-        err.classList.add("show");
+        errEl.classList.add("show");
       })
       .finally(function () { ctaSending = false; });
-  });
+  }
+
+  $("cta-btn").addEventListener("click", function () { handleCtaClick($("cta-btn"), $("cta-err")); });
+  $("cta-btn-top").addEventListener("click", function () { handleCtaClick($("cta-btn-top"), $("cta-err-top")); });
 
   /* ── תוצאה ── */
   function planCard(icon, title, text) {
