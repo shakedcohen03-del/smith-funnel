@@ -68,7 +68,7 @@
   .screen.active { display: flex; animation: rise .45s cubic-bezier(.2,.7,.2,1) both; }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .screen.active, .opt, .an-row, .plan-card { animation: none !important; transition: none !important; }
+    .screen.active, .opt, .an-row, .plan-card, .btn-big, .cta-success { animation: none !important; transition: none !important; }
   }
 
   /* ── מסך פתיחה ─────────────────────────────── */
@@ -391,18 +391,49 @@
   .plan-card h3 { font-size: 16.5px; font-weight: 800; }
   .plan-card p { color: #cdd5cf; font-size: 15px; line-height: 1.65; }
   .plan-bonus { border-color: rgba(52,226,127,.35); background: linear-gradient(160deg, #15241c, #101a15); }
-  .next-card {
-    background: var(--bg-soft);
-    border: 1px dashed rgba(52,226,127,.4);
+  /* ── כרטיס הליווי — ה-CTA המרכזי של מסך התוכנית ── */
+  .cta-card {
+    background: linear-gradient(160deg, rgba(52,226,127,.14), rgba(52,226,127,.04));
+    border: 1.5px solid rgba(52,226,127,.45);
     border-radius: var(--radius);
-    padding: 20px;
-    margin: 24px 0;
-    display: flex; gap: 14px; align-items: flex-start;
+    padding: 26px 20px 20px;
+    margin: 26px 0 14px;
+    text-align: center;
   }
-  .next-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(52,226,127,.5); }
-  .next-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
-  .next-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
-  .next-card p b { color: var(--text); }
+  .cta-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(52,226,127,.55); margin-bottom: 12px; }
+  .cta-card h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+  .cta-card p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin-bottom: 18px; }
+  .cta-card p b { color: var(--text); }
+  .cta-card .send-err { margin-top: 14px; margin-bottom: 0; text-align: start; }
+  .btn-big {
+    font-size: 19.5px;
+    font-weight: 900;
+    padding: 21px 22px;
+    animation: ctaPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 14px 34px -12px rgba(52,226,127,.45); }
+    50% { box-shadow: 0 18px 52px -8px rgba(52,226,127,.85); }
+  }
+  .cta-note { color: var(--muted); font-size: 12.5px; margin-top: 13px; }
+  .cta-success {
+    background: rgba(52,226,127,.1);
+    border: 1.5px solid rgba(52,226,127,.5);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    margin: 26px 0 14px;
+    text-align: center;
+    animation: rise .45s both;
+  }
+  .cta-success .big-check {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--accent);
+    display: grid; place-items: center;
+    margin: 0 auto 14px;
+  }
+  .cta-success h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+  .cta-success p { color: var(--muted); font-size: 15px; line-height: 1.65; }
+  .cta-success p b { color: var(--text); }
 
   footer { text-align: center; color: #5f6a63; font-size: 12px; padding: 10px 0 34px; }
   footer a { color: #8a958d; text-decoration: none; }
@@ -517,7 +548,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#34e27f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <h2>התוכנית שלך מוכנה</h2>
-      <p>לאן לשלוח לך אותה? השאר פרטים ונפתח לך אותה מיד. סמית גם עובר אישית על כל שאלון ושולח המשך מותאם.</p>
+      <p>צעד אחרון: כתוב למי היא שייכת, ונפתח לך אותה מיד.</p>
       <div class="chips" id="sum-chips"></div>
       <form id="lead-form" novalidate>
         <div class="hp-field" aria-hidden="true">
@@ -552,7 +583,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </form>
-      <div class="privacy-note">הפרטים שלך נשמרים אצל סמית בלבד ולא מועברים לאף גורם אחר.</div>
+      <div class="privacy-note">הפרטים לא נשלחים לשום מקום בשלב הזה. הם יגיעו לסמית רק אם תבחר בסוף שנחזור אליך.</div>
     </div>
   </div>
 </section>
@@ -577,12 +608,18 @@
         </div>
       </div>
       <div id="plan-cards"></div>
-      <div class="next-card">
+      <div class="cta-card" id="cta-card">
         <img src="assets/smith.jpg" alt="סמית">
-        <div>
-          <h3>מה עכשיו?</h3>
-          <p>רוב הגברים שעונים תשובות כמו שלך לא צריכים עוד מידע. הם צריכים <b>מערכת שמתאימה לחיים שלהם</b>, וזה בדיוק מה שסמית בונה. שמור על הנייד קרוב: סמית עובר אישית על השאלונים ושולח המשך מותאם, בגובה העיניים ובלי לחץ.</p>
-        </div>
+        <h3>רוצה שנעשה את זה יחד?</h3>
+        <p>התוכנית שלמעלה היא הכיוון. מה שהופך אותה לתוצאה זה <b>ליווי אישי ומערכת שמתאימים לחיים שלך</b>, וזה בדיוק מה שסמית עושה.</p>
+        <button class="btn btn-big" id="cta-btn" type="button">אני רוצה ליווי יחד עם סמית</button>
+        <div class="send-err" id="cta-err"></div>
+        <div class="cta-note">בלי התחייבות. לוחצים, והצוות של סמית חוזר אליך אישית.</div>
+      </div>
+      <div class="cta-success" id="cta-success" hidden>
+        <div class="big-check"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#06130b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>מעולה!</h3>
+        <p id="cta-success-text">הצוות שלנו יצור איתך קשר בקרוב.</p>
       </div>
       <a class="btn btn-ghost" href="https://instagram.com/mrsmith.fit" target="_blank" rel="noopener" style="text-decoration:none">בינתיים, בוא לעקוב אחרי סמית באינסטגרם</a>
       <footer><span dir="ltr">© MR SMITH · <a href="https://instagram.com/mrsmith.fit" target="_blank" rel="noopener">mrsmith.fit</a></span></footer>
@@ -722,7 +759,7 @@
   };
 
   /* ── state ── */
-  var state = { step: 0, answers: {}, submitted: false, failCount: 0 };
+  var state = { step: 0, answers: {}, lead: null, planReady: false, sent: false, failCount: 0 };
 
   var $ = function (id) { return document.getElementById(id); };
   var screens = ["s-hero", "s-quiz", "s-analyze", "s-form", "s-result"];
@@ -747,7 +784,7 @@
       buildSummaryChips();
       restoreSubmitBtn();
       show("s-form");
-    } else if (st.s === "result" && state.submitted) {
+    } else if (st.s === "result" && state.planReady) {
       show("s-result");
     } else {
       show("s-hero");
@@ -886,8 +923,9 @@
         signal: ctrl.signal
       }).then(function (res) {
         clearTimeout(timer);
-        if (res.ok) resolve(true);
-        else reject(new Error("http_" + res.status));
+        if (res.ok) {
+          res.json().then(resolve, function () { resolve({ ok: true }); });
+        } else reject(new Error("http_" + res.status));
       }).catch(function (e) {
         clearTimeout(timer);
         reject(e);
@@ -914,9 +952,11 @@
     btn.innerHTML = submitBtnHtml;
   }
 
+  // הטופס לא שולח כלום לשרת — הפרטים נשמרים בזיכרון הדף בלבד,
+  // ונשלחים ל-CRM רק אם הליד לוחץ בסוף על כפתור "אני רוצה ליווי יחד עם סמית".
   $("lead-form").addEventListener("submit", function (ev) {
     ev.preventDefault();
-    if (state.submitted) { showResult($("f-name").value.trim() || "חבר"); return; }
+    if (state.planReady) { showResult(state.lead ? state.lead.name : "חבר"); return; }
 
     var name = $("f-name").value.trim();
     var phone = $("f-phone").value;
@@ -934,39 +974,68 @@
     }
     if (!ok) return;
 
-    var btn = $("submit-btn");
-    btn.disabled = true;
-    btn.textContent = "רק רגע, שומר...";
-    $("send-err").classList.remove("show");
+    state.lead = { name: name, phone: normalizePhoneIL(phone), email: email };
+    state.planReady = true;
+    showResult(name);
+  });
 
-    var payload = {
-      name: name,
-      phone: normalizePhoneIL(phone),
-      email: email,
+  /* ── כפתור הליווי — הרגע היחיד שבו הפרטים נשלחים ל-CRM ── */
+  function buildPayload() {
+    return {
+      name: state.lead.name,
+      phone: state.lead.phone,
+      email: state.lead.email,
       consent: true,
       hp_field: document.querySelector('input[name="hp_field"]').value || "",
       answers: collectAnswersForCrm(),
       profile: archetype(),
       channel: new URLSearchParams(location.search).get("src") || ""
     };
+  }
 
-    submitWithRetry(payload)
-      .then(function () {
-        state.submitted = true;
-        restoreSubmitBtn();
-        showResult(name);
+  function renderCtaState() {
+    var card = $("cta-card");
+    var success = $("cta-success");
+    if (state.sent) {
+      card.hidden = true;
+      success.hidden = false;
+    } else {
+      card.hidden = false;
+      success.hidden = true;
+    }
+  }
+
+  var ctaSending = false;
+  $("cta-btn").addEventListener("click", function () {
+    if (state.sent || ctaSending || !state.lead) return;
+    ctaSending = true;
+    var btn = $("cta-btn");
+    btn.disabled = true;
+    btn.textContent = "רק רגע, שולח...";
+    $("cta-err").classList.remove("show");
+
+    submitWithRetry(buildPayload())
+      .then(function (res) {
+        state.sent = true;
+        if (res && res.whatsapp === "sent") {
+          $("cta-success-text").innerHTML =
+            'הצוות שלנו יצור איתך קשר בקרוב.<br><b>טיפ: תציץ בוואטסאפ, סמית כבר שלח לך שם הודעה.</b>';
+        }
+        renderCtaState();
       })
       .catch(function () {
         state.failCount++;
-        restoreSubmitBtn();
-        var err = $("send-err");
+        btn.disabled = false;
+        btn.textContent = "אני רוצה ליווי יחד עם סמית";
+        var err = $("cta-err");
         if (state.failCount >= 2) {
-          err.innerHTML = 'משהו השתבש בשמירה. אפשר לנסות שוב, או פשוט <a href="' + IG_URL + '" target="_blank" rel="noopener">לשלוח לסמית הודעה באינסטגרם</a> עם המילה "תוכנית" והוא יחזור אליך אישית.';
+          err.innerHTML = 'משהו השתבש בשליחה. אפשר לנסות שוב, או פשוט <a href="' + IG_URL + '" target="_blank" rel="noopener">לשלוח לסמית הודעה באינסטגרם</a> עם המילה "ליווי" והוא יחזור אליך אישית.';
         } else {
-          err.textContent = "לא הצלחנו לשמור את הפרטים. בדוק את החיבור לאינטרנט ונסה שוב.";
+          err.textContent = "לא הצלחנו לשלוח. בדוק את החיבור לאינטרנט ונסה שוב.";
         }
         err.classList.add("show");
-      });
+      })
+      .finally(function () { ctaSending = false; });
   });
 
   /* ── תוצאה ── */
@@ -991,6 +1060,7 @@
       '<div class="pc-head"><span class="pc-ico">👑</span><h3>טיפ בונוס מסמית, בשבילך</h3></div>' +
       "<p>" + (BONUS[a.age] || BONUS.b) + "</p></div>";
     $("plan-cards").innerHTML = cards;
+    renderCtaState();
     nav({ s: "result" });
     show("s-result");
   }
