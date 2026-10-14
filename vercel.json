@@ -1,8 +1,10 @@
 {
   "regions": ["fra1"],
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/", "has": [{ "type": "host", "value": "start.yachadsmith.com" }], "destination": "/start", "permanent": false }
+  ],
   "rewrites": [
-    { "source": "/", "has": [{ "type": "host", "value": "start.yachadsmith.com" }], "destination": "/start/index" },
     { "source": "/start", "destination": "/start/index" }
   ],
   "headers": [
