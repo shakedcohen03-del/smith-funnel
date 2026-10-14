@@ -14,5 +14,6 @@ function buildQuiz(body) {
 }
 
 export default async function handler(req, res) {
-  return proxy(req, res, { name: 'quiz', path: '/api/landing/quiz', build: buildQuiz });
+  // one visit sends 8 snapshots plus going back and retries, and this route only updates an existing lead
+  return proxy(req, res, { name: 'quiz', path: '/api/landing/quiz', rateMax: 60, build: buildQuiz });
 }

@@ -85,16 +85,21 @@ async function postJSON(url, data, ms) {
   }
 }
 
-// כל שמירה שולחת את כל מה שנענה עד עכשיו. שרשרת = סדר נשמר, האחרונה תמיד מנצחת
+// כל שמירה שולחת את כל מה שנענה עד עכשיו. שרשרת = סדר נשמר, האחרונה תמיד מנצחת.
+// snapshot שכבר יש אחריו snapshot חדש יותר בתור מוותר לפני כל ניסיון: החדש מכיל את כל התשובות שלו
 let chain = Promise.resolve(true);
+let seq = 0;
 const snapshot = () => Q.filter((q) => S.answers[q.id] !== undefined).map((q) => ({ id: q.id, q: q.q, a: S.answers[q.id] }));
-async function sendWithRetry(body) {
+async function sendWithRetry(body, my) {
   for (const wait of [0, 800, 2000, 4500]) {
     if (wait) await sleep(wait);
+    if (my !== seq) return true;
     try {
       const r = await postJSON("/api/quiz", body, 9000);
       if (r.ok) return true;
-      if (r.status >= 400 && r.status < 500 && r.status !== 429 && r.status !== 408) return false;
+      // 429: עוד ניסיון בתוך אותה דקה רק מאריך את החסימה
+      if (r.status === 429) return false;
+      if (r.status >= 400 && r.status < 500 && r.status !== 408) return false;
     } catch {}
   }
   return false;
@@ -103,7 +108,8 @@ function save(final) {
   if (!S.session) return Promise.resolve(false);
   const body = { session: S.session, answers: snapshot(), total: Q.length, completed: !!final };
   if (final) body.quiz_event_id = S.quizEventId;
-  chain = chain.then(() => sendWithRetry(body));
+  const my = ++seq;
+  chain = chain.then(() => sendWithRetry(body, my));
   return chain;
 }
 
@@ -138,6 +144,7 @@ function build() {
   body.addEventListener("input", onInput);
   body.addEventListener("submit", onSubmit);
   body.addEventListener("focusout", onBlur);
+  body.addEventListener("keydown", onKey);
   render(S.step, 0);
 }
 
@@ -170,6 +177,9 @@ function close() {
 addEventListener("popstate", () => {
   if (ignorePop) { ignorePop = false; return; }
   if (!dlg || !dlg.open) return;
+  // מסמך משפטי פתוח מעל השאלון: חזרה סוגרת רק אותו (בלי רשומת היסטוריה משלו, כדי שלא תיתקע אחת)
+  const lg = document.querySelector("dialog.f-legal");
+  if (lg && lg.open) { lg.close(); history.pushState({ f: 1 }, ""); return; }
   if (S.step === FINISHING || S.locked) { history.pushState({ f: 1 }, ""); return; }
   if (S.step > 0 && S.step <= Q.length) { back(); history.pushState({ f: 1 }, ""); return; }
   closeDialog();
@@ -206,14 +216,16 @@ function render(step, dir) {
   count.hidden = !count.textContent;
   dlg.dataset.step = step === 0 ? "details" : step <= Q.length ? "q" : step === FINISHING ? "finishing" : "thanks";
   if (step > 0 && step <= Q.length && Q[step - 1].type === "text") startRotate(Q[step - 1]);
+  // נגיעה כפולה: הנגיעה השנייה נבלעת ולא עונה על שאלה שעוד לא נראתה
+  S.guardUntil = performance.now() + 450;
 }
 
 // ---------- שלב 1: פרטים ----------
-const field = (id, label, ph, attrs) => `
+const field = (id, label, ph, attrs, extra = "") => `
   <div class="f__field">
     <label class="f__label" for="f-${id}">${esc(label)}</label>
     <input class="f__input" id="f-${id}" name="${id}" ${attrs} placeholder="${esc(ph || "")}" value="${esc(id === "phone" ? fmtPhone(S[id]) : S[id] || "")}" aria-describedby="f-${id}-err" required>
-    <p class="f__err" id="f-${id}-err" hidden></p>
+    <p class="f__err" id="f-${id}-err" hidden></p>${extra}
   </div>`;
 
 function legalHTML() {
@@ -230,8 +242,7 @@ function detailsHTML() {
     <form class="f__form" novalidate>
       ${field("name", D.name_label, D.name_ph, 'autocomplete="name" enterkeyhint="next" autocapitalize="words"')}
       ${field("phone", D.phone_label, D.phone_ph, 'type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" dir="ltr"')}
-      ${field("email", D.email_label, D.email_ph, 'type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" dir="ltr"')}
-      <button type="button" class="f__suggest" hidden></button>
+      ${field("email", D.email_label, D.email_ph, 'type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" dir="ltr"', '<button type="button" class="f__suggest" hidden></button>')}
       <div class="f__hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
       <label class="f__consent">
         <input type="checkbox" name="consent"${S.consent ? " checked" : ""}>
@@ -291,6 +302,14 @@ async function onSubmit(e) {
   formErr("");
   const firstBad = Object.keys(errs).find((k) => errs[k]);
   if (firstBad) { body.querySelector(`#f-${firstBad}`).focus(); return; }
+  // שגיאת כתיב בדומיין שהמשתמש עוד לא ראה (גם Enter/Go): עוצרים פעם אחת ומראים את ההצעה.
+  // לחיצה נוספת שולחת כמו שזה. הצ'יפ תופס מקום קבוע, אז שום דבר לא זז מתחת לאצבע
+  const sug = suggestEmail(email);
+  if (sug && S.sugStop !== email && !(S.sugFor === email && performance.now() - S.sugAt > 1000)) {
+    S.sugStop = email;
+    showSuggest(email, sug)?.focus({ preventScroll: true });
+    return;
+  }
 
   S.name = name; S.phone = phone; S.email = email; S.consent = val("consent").checked;
   const key = [name, phone, email, S.consent].join("|");
@@ -331,16 +350,37 @@ async function onSubmit(e) {
   }
 }
 
+// הצעת תיקון למייל. הצ'יפ שמור במקום קבוע מתחת לשדה (visibility), כך שהופעה או היעלמות לא מזיזות את הטופס
+function showSuggest(email, sug) {
+  const b = body.querySelector(".f__suggest");
+  if (!b) return null;
+  if (!sug) { b.hidden = true; return null; }
+  if (b.hidden || b.dataset.v !== sug) {
+    b.textContent = (D.email_suggest || "התכוונת ל-{email}?").replace("{email}", sug);
+    b.dataset.v = sug;
+    b.hidden = false;
+    S.sugFor = email;
+    S.sugAt = performance.now();
+  }
+  return b;
+}
+
 function onBlur(e) {
   const t = e.target;
   if (t.id === "f-email") {
-    const s = suggestEmail(t.value.trim().toLowerCase());
-    const b = body.querySelector(".f__suggest");
-    if (!b) return;
-    if (s) { b.textContent = (D.email_suggest || "התכוונת ל-{email}?").replace("{email}", s); b.dataset.v = s; b.hidden = false; }
-    else b.hidden = true;
+    const email = t.value.trim().toLowerCase();
+    showSuggest(email, suggestEmail(email));
   }
   if (t.id === "f-phone" && t.value) t.value = fmtPhone(t.value);
+}
+
+// Enter בשם או בטלפון (גם "הבא" במקלדת של הטלפון) עובר לשדה הבא במקום לשלוח טופס חצי ריק
+function onKey(e) {
+  if (e.key !== "Enter" || e.isComposing) return;
+  const next = { "f-name": "#f-phone", "f-phone": "#f-email" }[e.target.id];
+  if (!next) return;
+  e.preventDefault();
+  body.querySelector(next)?.focus();
 }
 
 function onInput(e) {
@@ -348,6 +388,10 @@ function onInput(e) {
   if (t.matches(".f__input")) {
     if (t.getAttribute("aria-invalid")) setErr(t.name, "");
     formErr("");
+  }
+  if (t.id === "f-email") {
+    const b = body.querySelector(".f__suggest");
+    if (b && !b.hidden && suggestEmail(t.value.trim().toLowerCase()) !== b.dataset.v) b.hidden = true;
   }
   if (t.id === "f-text") {
     const btn = body.querySelector('[data-act="next"]');
@@ -377,11 +421,11 @@ function questionHTML(i) {
     const sel = multi ? (Array.isArray(a) ? a : []) : a;
     const opts = q.options.map((o, k) => {
       const on = multi ? sel.includes(o) : sel === o;
-      const role = multi ? `role="checkbox" aria-checked="${on}"` : `aria-pressed="${on}"`;
-      return `<button class="f__opt${on ? " is-on" : ""}" type="button" ${role} data-v="${esc(o)}" style="--i:${k}"><span class="f__mark" aria-hidden="true">${ICON.check}</span><span class="f__opt-label">${esc(o)}</span></button>`;
+      return `<button class="f__opt${on ? " is-on" : ""}" type="button" role="${multi ? "checkbox" : "radio"}" aria-checked="${on}" data-v="${esc(o)}" style="--i:${k}"><span class="f__mark" aria-hidden="true">${ICON.check}</span><span class="f__opt-label">${esc(o)}</span></button>`;
     }).join("");
-    inner = `<div class="f__opts${multi ? " f__opts--multi" : ""}" role="group" aria-labelledby="f-title">${opts}</div>
-      ${multi ? `<button class="f__btn" type="button" data-act="next"${sel.length ? "" : " disabled"}>${esc(C.next)}</button>` : ""}`;
+    // בבחירה מרובה כפתור ההמשך דביק בתחתית, כך שהוא תמיד על המסך גם כשהרשימה ארוכה מהמסך
+    inner = `<div class="f__opts${multi ? " f__opts--multi" : ""}" role="${multi ? "group" : "radiogroup"}" aria-labelledby="f-title">${opts}</div>
+      ${multi ? `<div class="f__actions"><button class="f__btn" type="button" data-act="next"${sel.length ? "" : " disabled"}>${esc(C.next)}</button></div>` : ""}`;
   }
   return `<section class="f__step f__step--q" data-type="${q.type}" data-q="${esc(q.id)}">
     ${ack}
@@ -416,6 +460,7 @@ function onClick(e) {
     setErr("email", "");
     return;
   }
+  if (performance.now() < (S.guardUntil || 0)) return;
   const opt = e.target.closest(".f__opt");
   if (opt) return onOpt(opt);
   const act = e.target.closest("[data-act]");
@@ -453,7 +498,7 @@ function onOpt(btn) {
   body.querySelectorAll(".f__opt").forEach((b) => {
     const on = b === btn;
     b.classList.toggle("is-on", on);
-    b.setAttribute("aria-pressed", String(on));
+    b.setAttribute("aria-checked", String(on));
   });
   btn.classList.add("is-pop");
   navigator.vibrate?.(8);
@@ -504,9 +549,12 @@ function finishingHTML(failed) {
 
 async function finish(retry) {
   S.locked = true;
+  const step = () => body.querySelector(".f__step--finishing");
   if (retry) {
     const f = body.querySelector(".f__fail");
     if (f) f.hidden = true;
+    // בזמן הניסיון החוזר חוזרים הספינר והכותרת "שומר"
+    step()?.classList.remove("is-failed");
   } else {
     go(FINISHING, 1);
   }
@@ -515,6 +563,8 @@ async function finish(retry) {
   await sleep(reduce || retry ? 0 : Math.max(0, 1500 - (performance.now() - t0)));
   S.locked = false;
   if (!ok) {
+    // במצב כשל: בלי ספינר, בלי "שומר" ובלי וי ירוקים. רק ההודעה וכפתור "נסה שוב"
+    step()?.classList.add("is-failed");
     const f = body.querySelector(".f__fail");
     if (f) { f.hidden = false; f.querySelector("button")?.focus(); }
     return;
@@ -545,8 +595,10 @@ function confetti() {
   const cv = dlg.querySelector(".f__confetti");
   const ctx = cv.getContext("2d");
   const dpr = Math.min(devicePixelRatio || 1, 2);
-  const W = (cv.width = innerWidth * dpr);
-  const H = (cv.height = innerHeight * dpr);
+  // הגודל האמיתי של הקנבס (בדסקטופ הוא בתוך הכרטיס), אחרת החלקיקים נמעכים
+  const box = cv.getBoundingClientRect();
+  const W = (cv.width = Math.round(box.width * dpr));
+  const H = (cv.height = Math.round(box.height * dpr));
   const cols = ["#46F516", "#ffffff", "#46F516", "#b8ff9e"];
   const P = Array.from({ length: 72 }, () => ({
     x: W / 2 + (Math.random() - 0.5) * W * 0.2, y: H * 0.32,
@@ -577,6 +629,7 @@ async function openLegal(href) {
   if (!d) {
     d = document.createElement("dialog");
     d.className = "f-legal";
+    d.setAttribute("aria-labelledby", "f-legal-title");
     d.innerHTML = `<div class="f-legal__bar"><button class="f__icon" type="button" aria-label="${esc(C.close || DEF.close)}">${ICON.close}</button></div><div class="f-legal__body" tabindex="-1"></div>`;
     d.querySelector("button").addEventListener("click", () => d.close());
     document.body.appendChild(d);
@@ -589,6 +642,9 @@ async function openLegal(href) {
     const doc = new DOMParser().parseFromString(html, "text/html");
     const main = doc.querySelector("main") || doc.body;
     main.querySelectorAll("script,style,link").forEach((n) => n.remove());
+    // הכותרת של המסמך היא שם הדיאלוג, ובדף נשאר h1 אחד
+    const h1 = main.querySelector("h1");
+    if (h1) { const h2 = doc.createElement("h2"); h2.id = "f-legal-title"; h2.innerHTML = h1.innerHTML; h1.replaceWith(h2); }
     box.innerHTML = main.innerHTML;
   } catch {
     box.innerHTML = `<p><a href="${esc(href)}" target="_blank" rel="noopener">${esc(href)}</a></p>`;

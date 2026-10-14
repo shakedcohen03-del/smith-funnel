@@ -10,7 +10,8 @@ const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
 if (navigator.connection?.saveData) H.classList.add("save-data");
 
 // a stable viewport unit for the hero: refreshed only when the width changes, never on toolbar moves
-let lastW = innerWidth;
+// (the first width comes from the head script, so nothing here forces a layout at load)
+let lastW = window.__vw0 || 0;
 addEventListener("resize", () => {
   if (innerWidth === lastW) return;
   lastW = innerWidth;
@@ -18,11 +19,15 @@ addEventListener("resize", () => {
 });
 
 // ---------- reveals, wipes, counters ----------
+// Content is hidden only under html.io, which this file adds itself. If this script never runs, or the
+// observer never answers (watchdog below), the page simply stays fully visible.
+const motion = !reduce && "IntersectionObserver" in window;
+if (motion) H.classList.add("io");
 for (const g of $$("[data-stagger]")) $$("[data-reveal]", g).forEach((el, i) => el.style.setProperty("--i", i));
 
 // section headlines: each word rises out of its own mask (text only, the h1 is never touched)
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-if (!reduce) {
+if (motion) {
   for (const h of $$(".display, .final__title")) {
     let i = 0;
     const out = [];
@@ -42,8 +47,16 @@ if (!reduce) {
   }
 }
 
+// counters below the fold start from 0 (the real value stays in the markup for screen readers); asked
+// through an observer so the load never forces a layout of the skipped sections
 const counters = $$("[data-count]");
-if (!reduce) for (const c of counters) if (c.getBoundingClientRect().top > innerHeight) c.textContent = "0";
+if (motion) {
+  const zero = new IntersectionObserver((es) => {
+    for (const e of es) if (!e.isIntersecting) e.target.textContent = "0";
+    zero.disconnect();
+  });
+  counters.forEach((c) => zero.observe(c));
+}
 
 function countUp(el) {
   const to = Number(el.dataset.count);
@@ -57,15 +70,61 @@ function countUp(el) {
   requestAnimationFrame(tick);
 }
 
-const io = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (!e.isIntersecting) continue;
-    e.target.classList.add("in");
-    io.unobserve(e.target);
-    if (e.target.dataset.count !== undefined) countUp(e.target);
+if (motion) {
+  let alive = false;
+  const io = new IntersectionObserver((entries) => {
+    alive = true;
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+      if (e.target.dataset.count !== undefined) countUp(e.target);
+    }
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+  $$("[data-reveal], .wipe, .label, .steps, .split, [data-count]").forEach((el) => io.observe(el));
+  // watchdog: an observer that never reports back must not leave the page hidden
+  setTimeout(() => { if (!alive) H.classList.remove("io"); }, 3000);
+
+  // keyboard focus reveals a block at once, without its stagger delay (no invisible focus near the bottom edge)
+  addEventListener("focusin", (e) => {
+    const el = e.target.closest?.("[data-reveal]");
+    if (!el) return;
+    el.classList.add("in");
+    // also ends a reveal that is still waiting out its stagger delay
+    el.getAnimations?.().forEach((a) => a.finish());
+  });
+
+  // the pain lines light up one by one as they pass the upper two thirds of the screen
+  const lit = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) { e.target.classList.add("on"); lit.unobserve(e.target); }
+  }, { rootMargin: "0px 0px -32% 0px", threshold: 0.6 });
+  $$(".pain__list li").forEach((el) => lit.observe(el));
+
+  // how it works (phones): the line fills as you read and each step lights up when the line reaches it
+  const steps = $(".steps");
+  const narrow = matchMedia("(max-width: 1023px)");
+  if (steps) {
+    const items = $$(".step", steps);
+    let queued = false;
+    const fillSteps = () => {
+      queued = false;
+      if (!narrow.matches) return items.forEach((it) => it.classList.add("on"));
+      const r = steps.getBoundingClientRect(), mid = innerHeight * 0.62;
+      const p = Math.max(0, Math.min(1, (mid - r.top - 10) / Math.max(1, r.height - 50)));
+      steps.style.setProperty("--p", p.toFixed(4));
+      for (const it of items) it.classList.toggle("on", it.getBoundingClientRect().top + 28 <= mid);
+    };
+    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(fillSteps); } };
+    let watching = false;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting === watching) return;
+      watching = e.isIntersecting;
+      if (watching) addEventListener("scroll", onScroll, { passive: true });
+      else removeEventListener("scroll", onScroll);
+      onScroll();
+    }, { rootMargin: "20% 0px 20% 0px" }).observe(steps);
   }
-}, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-$$("[data-reveal], .wipe, .label, .steps, .split, [data-count]").forEach((el) => io.observe(el));
+}
 
 // ---------- marquee: visible pause button, and no work while off screen ----------
 const mq = $("#mq");
@@ -154,6 +213,9 @@ if (track) {
   let raf = 0;
   const update = () => {
     raf = 0;
+    // a tab stop only while there is something to scroll (desktop shows the whole grid)
+    if (track.scrollWidth - track.clientWidth > 4) track.tabIndex = 0;
+    else track.removeAttribute("tabindex");
     const max = Math.max(1, track.scrollWidth - track.clientWidth);
     const x = Math.min(max, Math.abs(track.scrollLeft));
     prev.disabled = x < 4;
@@ -162,11 +224,11 @@ if (track) {
     thumb.style.transform = `translateX(${-(x / max) * (1 - vis) * 100}%) scaleX(${vis})`;
   };
   track.addEventListener("scroll", () => { raf = raf || requestAnimationFrame(update); }, { passive: true });
-  addEventListener("resize", update);
-  update();
+  // fires once at start, again when page.css (loaded async) turns the list into a row, and on every resize
+  new ResizeObserver(() => update()).observe(track);
 }
 
-// ---------- sticky mobile CTA: after the hero CTA, hidden over the final CTA and the footer ----------
+// ---------- sticky mobile CTA: after the hero CTA, hidden once the final CTA button itself and the footer are on screen ----------
 const bar = $("#sticky");
 const heroCta = $(".hero__cta");
 if (bar && heroCta) {
@@ -180,8 +242,8 @@ if (bar && heroCta) {
   const endIo = new IntersectionObserver((es) => {
     for (const e of es) atEnd.set(e.target, e.isIntersecting);
     update();
-  });
-  for (const el of [$("#start"), $("#ftr")]) if (el) endIo.observe(el);
+  }, { rootMargin: "0px 0px -8% 0px" });
+  for (const el of [$(".final__cta"), $("#ftr")]) if (el) endIo.observe(el);
 }
 
 // ---------- desktop header gets a solid background once the page moves ----------

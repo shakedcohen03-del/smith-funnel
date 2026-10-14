@@ -95,12 +95,14 @@ export const userAgent = (req) => clip(req.headers['user-agent'], 512);
 
 // Best effort: memory lives per function instance, so this only stops a single noisy client
 const hits = new Map();
+// A refused request is not counted: a client that retries while limited does not extend its own block
 export function rateLimited(key, max = RATE_MAX, now = Date.now()) {
   const recent = (hits.get(key) || []).filter((t) => now - t < RATE_WINDOW_MS);
-  recent.push(now);
+  const limited = recent.length >= max;
+  if (!limited) recent.push(now);
   hits.set(key, recent);
   if (hits.size > 5000) hits.clear();
-  return recent.length > max;
+  return limited;
 }
 
 export const honeypotFilled = (body) => String(body.website ?? '').trim() !== '';
@@ -195,13 +197,13 @@ async function deliver(res, name, path, payload) {
 }
 
 // The whole request flow shared by both endpoints. build(body, req) returns {error} or {payload}
-export async function proxy(req, res, { name, path, honeypot = false, build }) {
+export async function proxy(req, res, { name, path, honeypot = false, rateMax = RATE_MAX, build }) {
   try {
     if (req.method !== 'POST') {
       res.setHeader('allow', 'POST');
       return send(res, 405, { error: 'method_not_allowed' });
     }
-    if (rateLimited(`${name}:${clientIp(req)}`)) {
+    if (rateLimited(`${name}:${clientIp(req)}`, rateMax)) {
       res.setHeader('retry-after', '60');
       return send(res, 429, { error: 'rate_limited' });
     }
