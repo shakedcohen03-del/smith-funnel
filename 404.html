@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#050505">
+<title>הדף לא נמצא · סמית</title>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #050505;
+    --text: #fff;
+    --text-2: rgba(255, 255, 255, .72);
+    --green: #46F516;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px 20px;
+    background: radial-gradient(60% 40% at 50% 35%, rgba(70, 245, 22, .10), transparent 70%), var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans Hebrew', 'Heebo', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    text-align: center;
+    overflow-x: clip;
+  }
+  main { max-width: 520px; }
+  .code { font-size: clamp(96px, 30vw, 160px); line-height: .9; font-weight: 900; font-stretch: 72%; color: var(--green); margin: 0; }
+  h1 { font-size: clamp(30px, 8vw, 44px); line-height: 1.1; font-weight: 900; font-stretch: 72%; margin: 16px 0 8px; }
+  p { color: var(--text-2); font-size: 17px; line-height: 1.65; margin: 0 0 28px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 56px; padding: 0 28px; border-radius: 999px;
+    background: var(--green); color: #050505; font-size: 18px; font-weight: 800; text-decoration: none;
+  }
+  .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="code" aria-hidden="true">404</p>
+  <h1>הדף לא נמצא</h1>
+  <p>אולי הקישור השתנה, או שהדף כבר לא קיים.</p>
+  <a class="btn" href="/">לדף הראשי</a>
+</main>
+</body>
+</html>
