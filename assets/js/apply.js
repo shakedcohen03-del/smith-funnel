@@ -1,4 +1,4 @@
-// הטופס בדף (#apply): שאלות, שם וטלפון בכרטיס אחד. שולח ליד ל-/api/lead, ואז את התשובות ל-/api/quiz.
+// הטופס בדף (#apply): שאלות רשות, ושם, טלפון ומייל חובה. שולח ליד ל-/api/lead, ואז את התשובות ל-/api/quiz.
 import { attribution, tracking, pixelBoot, pixelLead, uuid } from "./tracking.js";
 
 pixelBoot();
@@ -20,6 +20,8 @@ const TEXT = {
   name: "כתוב את השם שלך",
   phoneEmpty: "כתוב מספר טלפון נייד",
   phoneBad: "צריך מספר נייד ישראלי, לדוגמה 050-1234567",
+  emailEmpty: "כתוב כתובת מייל",
+  emailBad: "כתובת המייל לא נראית תקינה, לדוגמה name@gmail.com",
   missing: "חסרים כמה פרטים. סימנו לך אותם בטופס.",
   failed: "משהו השתבש בשליחה והפרטים לא נקלטו. נסה שוב בעוד רגע, או כתוב לי ישירות בוואטסאפ.",
   limited: "היו כמה ניסיונות בזמן קצר. נסה שוב בעוד דקה.",
@@ -33,6 +35,8 @@ export function normalizeIsraeliMobile(raw) {
   if (digits.startsWith("972")) digits = "0" + digits.slice(3).replace(/^0+/, "");
   return /^05\d{8}$/.test(digits) ? digits : null;
 }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const fieldById = (id) => form.querySelector(`.field[data-id="${id}"]`);
 const controlOf = (field) => field.querySelector("select, textarea, input");
@@ -71,6 +75,7 @@ function problemOf(field) {
   if (id === "weight") return !v || (numberOf(v) >= 30 && numberOf(v) <= 300) ? "" : TEXT.weight;
   if (id === "height") return !v || (/^\d{3}$/.test(v) && +v >= 120 && +v <= 230) ? "" : TEXT.height;
   if (c.name === "name") return v.length >= 2 ? "" : TEXT.name;
+  if (c.name === "email") return !v ? TEXT.emailEmpty : EMAIL_RE.test(v) ? "" : TEXT.emailBad;
   if (c.name === "phone") return !v ? TEXT.phoneEmpty : normalizeIsraeliMobile(v) ? "" : TEXT.phoneBad;
   return "";
 }
@@ -213,6 +218,7 @@ async function onSubmit(e) {
   leadEventId ||= uuid();
   const name = document.getElementById("f-name").value.trim().replace(/\s+/g, " ");
   const phone = normalizeIsraeliMobile(document.getElementById("f-phone").value);
+  const email = document.getElementById("f-email").value.trim().toLowerCase();
 
   let res = null;
   try {
@@ -222,6 +228,7 @@ async function onSubmit(e) {
         session,
         name,
         phone,
+        email,
         marketing_consent: false,
         consent_text: null,
         website: document.getElementById("f-website").value,
@@ -241,6 +248,9 @@ async function onSubmit(e) {
     if (code === "invalid_phone") {
       setError(document.getElementById("f-phone").closest(".field"), TEXT.phoneBad);
       showStatus(TEXT.phoneBad);
+    } else if (code === "invalid_email") {
+      setError(document.getElementById("f-email").closest(".field"), TEXT.emailBad);
+      showStatus(TEXT.emailBad);
     } else if (code === "invalid_name") {
       setError(document.getElementById("f-name").closest(".field"), TEXT.name);
       showStatus(TEXT.name);
@@ -252,8 +262,10 @@ async function onSubmit(e) {
     return;
   }
 
-  await sendQuiz({ session, total: QUESTION_IDS.length, completed: true, answers: collectAnswers() });
-  pixelLead({ name, phone }, leadEventId);
+  // השאלות רשות: בלי אף תשובה אין מה לשלוח לכרטיס
+  const answers = collectAnswers();
+  if (answers.length) await sendQuiz({ session, total: QUESTION_IDS.length, completed: true, answers });
+  pixelLead({ name, phone, email }, leadEventId);
   showThanks(name);
 }
 

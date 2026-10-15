@@ -564,10 +564,10 @@
           <fieldset class="step">
             <legend class="step__title"><span class="step__num" aria-hidden="true">1</span><span>קודם כל, תהיה כן עם עצמך</span></legend>
 
-            <div class="field" data-id="marital" data-required>
-              <label class="field__label" for="f-marital">מה המצב המשפחתי שלך?</label>
+            <div class="field" data-id="marital">
+              <label class="field__label" for="f-marital"><span data-q>מה המצב המשפחתי שלך?</span> <small class="field__opt">(לא חובה)</small></label>
               <div class="select">
-                <select id="f-marital" name="marital" required aria-describedby="e-marital">
+                <select id="f-marital" name="marital" aria-describedby="e-marital">
                   <option value="" selected disabled>בחר תשובה</option>
                   <option>נשוי</option>
                   <option>בזוגיות</option>
@@ -581,10 +581,10 @@
               <p class="field__err" id="e-marital" hidden></p>
             </div>
 
-            <div class="field" data-id="duration" data-required>
-              <label class="field__label" for="f-duration">כמה זמן אתה כבר מרגיש ככה?</label>
+            <div class="field" data-id="duration">
+              <label class="field__label" for="f-duration"><span data-q>כמה זמן אתה כבר מרגיש ככה?</span> <small class="field__opt">(לא חובה)</small></label>
               <div class="select">
-                <select id="f-duration" name="duration" required aria-describedby="e-duration">
+                <select id="f-duration" name="duration" aria-describedby="e-duration">
                   <option value="" selected disabled>בחר תשובה</option>
                   <option>פחות מחצי שנה</option>
                   <option>חצי שנה עד שנה</option>
@@ -595,19 +595,18 @@
               <p class="field__err" id="e-duration" hidden></p>
             </div>
 
-            <div class="field" data-id="pain" data-required>
-              <label class="field__label" for="f-pain">מה הכי כואב לך היום?</label>
+            <div class="field" data-id="pain">
+              <label class="field__label" for="f-pain"><span data-q>מה הכי כואב לך היום?</span> <small class="field__opt">(לא חובה)</small></label>
               <div class="select">
-                <select id="f-pain" name="pain" required aria-describedby="e-pain">
+                <select id="f-pain" name="pain" aria-describedby="e-pain">
                   <option value="" selected disabled>בחר תשובה</option>
                   <option>איך אני נראה במראה</option>
+                  <option>הבטן שלא יורדת</option>
+                  <option>עליתי במשקל ולא מצליח לרדת</option>
                   <option>חוסר אנרגיה ועייפות</option>
-                  <option>הביטחון העצמי שלי</option>
-                  <option>אין לי זמן לעצמי</option>
-                  <option>לחץ ושחיקה</option>
-                  <option>הערבים לבד</option>
-                  <option>איך הילדים רואים אותי</option>
-                  <option>אחר</option>
+                  <option>חוסר ביטחון בגוף שלי</option>
+                  <option>מתחיל חזק ונשבר אחרי שבוע</option>
+                  <option>האוכל בערבים יוצא משליטה</option>
                 </select>
               </div>
               <p class="field__err" id="e-pain" hidden></p>
@@ -640,10 +639,10 @@
               </div>
             </div>
 
-            <fieldset class="field field--radio" data-id="ready" data-required aria-describedby="e-ready">
-              <legend class="field__label">אם אוכל לתת לך את כל מה שאתה רוצה, תהיה מוכן להתחיל כבר היום?</legend>
+            <fieldset class="field field--radio" data-id="ready" aria-describedby="e-ready">
+              <legend class="field__label"><span data-q>אם אוכל לתת לך את כל מה שאתה רוצה, תהיה מוכן להתחיל כבר היום?</span> <small class="field__opt">(לא חובה)</small></legend>
               <div class="seg">
-                <label class="seg__opt"><input type="radio" name="ready" value="כן" required><span>כן</span></label>
+                <label class="seg__opt"><input type="radio" name="ready" value="כן"><span>כן</span></label>
                 <label class="seg__opt"><input type="radio" name="ready" value="לא"><span>לא</span></label>
               </div>
               <p class="field__err" id="e-ready" hidden></p>
@@ -663,6 +662,12 @@
               <label class="field__label" for="f-phone">טלפון</label>
               <input id="f-phone" name="phone" type="tel" dir="ltr" inputmode="tel" autocomplete="tel" maxlength="20" required placeholder="050-0000000" aria-describedby="e-phone">
               <p class="field__err" id="e-phone" hidden></p>
+            </div>
+
+            <div class="field" data-required>
+              <label class="field__label" for="f-email">מייל</label>
+              <input id="f-email" name="email" type="email" dir="ltr" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120" required placeholder="name@gmail.com" aria-describedby="e-email">
+              <p class="field__err" id="e-email" hidden></p>
             </div>
 
             <div class="hp" aria-hidden="true">

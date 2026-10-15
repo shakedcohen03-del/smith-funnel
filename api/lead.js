@@ -28,9 +28,9 @@ function buildLead(body, req) {
   if (name.length < 2) return { error: 'invalid_name' };
   const phone = normalizeIsraeliMobile(body.phone);
   if (!phone) return { error: 'invalid_phone' };
-  // Email is optional (the form asks only name + phone); when sent it must be valid
+  // Email is required (the form asks name, phone and email)
   const email = clip(body.email, 120).toLowerCase();
-  if (email && !EMAIL_RE.test(email)) return { error: 'invalid_email' };
+  if (!EMAIL_RE.test(email)) return { error: 'invalid_email' };
   const session = sessionOf(body.session);
   if (!session) return { error: 'invalid_session' };
 
@@ -39,7 +39,7 @@ function buildLead(body, req) {
     session,
     name,
     phone,
-    email: email || null,
+    email,
     marketing_consent: consent,
     consent_text: consent ? clip(body.consent_text, 500) || null : null,
     total: QUIZ_TOTAL,
