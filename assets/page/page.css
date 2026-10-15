@@ -752,3 +752,80 @@ button.short:focus-visible, a.short:focus-visible { outline: 3px solid var(--acc
   .obj__q { min-height: 2.6em; }
 }
 .doubts .cta-row { margin-top: 44px; }
+
+/* ===== רקע ירוק, טקסט לבן וכתום (בקשת הבעלים, 15.10). לחזרה לרקע הלבן: למחוק מכאן עד סוף הקובץ ===== */
+:root {
+  --bg: #0B5136;
+  --bg-tint: #0E5C3E;
+  --bg-dark: #083D29;
+  --bg-deep: #062E1F;
+  --orange-l: #F6A462;
+  --text: #FFFFFF;
+  --text-2: rgba(255, 255, 255, .78);
+  --line: rgba(255, 255, 255, .18);
+  --green-l: rgba(255, 255, 255, .07);
+  --accent: var(--orange-l);
+  --green-ink: var(--orange-l);
+}
+body { background: var(--bg); color: var(--text); }
+::selection { background: var(--orange); color: var(--white); }
+
+/* הטופס נשאר כרטיס לבן עם טקסט כהה, כמו קודם */
+.card {
+  --text: #0F1F18; --text-2: #56655D; --line: #D6E1DA; --green-l: #EFF5F1; --accent: var(--orange-d);
+  background: var(--white); color: var(--text);
+}
+.card .btn--outline { --btn-fg: var(--green); --ico-bg: var(--orange); border-color: var(--green); }
+.card .btn--outline:hover { --btn-bg: #EFF5F1; }
+
+/* רקעים של הקטעים */
+.top { background: rgba(11, 81, 54, .94); border-bottom-color: var(--line); }
+.top__dot { background: var(--orange-l); box-shadow: 0 0 0 4px rgba(246, 164, 98, .18); }
+.sec--tint { background: var(--bg-tint); }
+.sec--dark, .apply { background: var(--bg-dark); }
+.cred, .ftr { background: var(--bg-deep); }
+
+/* כותרות והדגשות: כתום במקום ירוק */
+.em, .quote--big, .you__close strong, .inner__turn strong, .cost__title, .ratio__big, .ratio__key strong,
+.vs__col--after .vs__title, .fit__col--yes .fit__title, .price--vip .price__tag, .price--vip .price__per,
+.gets__list a, .vs__arrow, .seal, .badge { color: var(--orange-l); }
+.badge { border-color: rgba(246, 164, 98, .5); }
+.badge__dot, .ratio__key::before, .inner__rule, .ratio__bar span:first-child { background: var(--orange-l); }
+.ratio__bar span:last-child, .ratio__key--life::before { background: var(--white); }
+.ratio__small, .ratio__key--life strong { color: var(--white); }
+.note, .quote, .you__close { border-inline-start-color: var(--orange-l); }
+.hero__cap { border-top-color: var(--orange-l); }
+.checks li::before { background-color: var(--orange); }
+.tag { color: #0F1F18; }
+.tag--after { background: var(--orange); color: var(--white); }
+.btn--outline { --btn-fg: var(--white); --ico-bg: var(--orange); border-color: rgba(255, 255, 255, .7); }
+
+/* כרטיסים וקופסאות שהיו לבנים */
+.portrait__label { background: var(--bg-dark); border-inline-start-color: var(--orange-l); }
+.vs__col, .gets, .fit__col--yes { background: rgba(255, 255, 255, .06); }
+.vs__col--now, .fit__col--no { background: rgba(0, 0, 0, .16); }
+.vs__col--after, .fit__col--yes { border-color: var(--orange-l); }
+.gets { border-color: var(--line); }
+.price { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .45); }
+.price--main { background: var(--bg-dark); border: 2px solid var(--orange-l); }
+.price--main .price__tag--solid { background: var(--orange); color: var(--white); border-color: var(--orange); }
+.guar__box { background: var(--bg-dark); border-inline-start: 3px solid var(--orange-l); }
+.seal { border-color: var(--orange-l); }
+.seal::before { border-color: rgba(246, 164, 98, .5); }
+@media (min-width: 1000px) {
+  .hero__cap { background: var(--bg-dark); border-inline-color: var(--line); border-bottom-color: var(--line); }
+  .conds li { border-top-color: var(--orange-l); }
+  .cost li { border-top-color: var(--orange-l); }
+}
+
+/* קווים ונקודות */
+.cost li { border-top-color: var(--line); }
+.steps li::before { background: rgba(255, 255, 255, .3); }
+.steps__dot { background: var(--bg-tint); border-color: var(--orange-l); }
+.steps li:first-child .steps__dot { background: var(--orange-l); }
+.faq__list, .qa { border-color: rgba(255, 255, 255, .2); }
+.qa__ico { border-color: rgba(255, 255, 255, .4); }
+.qa__ico::before, .qa__ico::after { background: var(--white); }
+.qa[open] .qa__ico, .qa summary:hover .qa__ico { background: var(--orange); border-color: var(--orange); }
+/* מסגרות של תמונות וסרטונים: כהות, לא לבנות, עד שהתמונה נטענת */
+.short, .tv__link { background: var(--bg-deep); }
