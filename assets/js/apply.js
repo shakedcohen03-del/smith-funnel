@@ -1,4 +1,4 @@
-// הטופס בדף (#apply): שאלות רשות, ושם, טלפון ומייל חובה. שולח ליד ל-/api/lead, ואז את התשובות ל-/api/quiz.
+// הטופס בדף (#apply): שם, טלפון ומייל, כולם חובה. שולח ליד ל-/api/lead.
 import { attribution, tracking, pixelBoot, pixelLead, uuid } from "./tracking.js";
 
 pixelBoot();
@@ -10,13 +10,7 @@ const submit = form?.querySelector(".form__submit");
 const submitTxt = form?.querySelector(".form__submit-txt");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// סדר השאלות כפי שהן נשלחות ל-CRM
-const QUESTION_IDS = ["marital", "duration", "pain", "six_months", "four_months", "weight", "height", "ready"];
 const TEXT = {
-  choose: "בחר תשובה מהרשימה",
-  ready: "בחר כן או לא",
-  weight: 'משקל בק"ג, מספר בין 30 ל־300',
-  height: 'גובה בס"מ, מספר בין 120 ל־230',
   name: "כתוב את השם שלך",
   phoneEmpty: "כתוב מספר טלפון נייד",
   phoneBad: "צריך מספר נייד ישראלי, לדוגמה 050-1234567",
@@ -38,8 +32,6 @@ export function normalizeIsraeliMobile(raw) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-const fieldById = (id) => form.querySelector(`.field[data-id="${id}"]`);
-const controlOf = (field) => field.querySelector("select, textarea, input");
 const errOf = (field) => field.querySelector(".field__err");
 
 function setError(field, msg) {
@@ -49,7 +41,7 @@ function setError(field, msg) {
     err.textContent = msg;
     err.hidden = false;
   }
-  field.querySelectorAll("select, textarea, input").forEach((c) => c.setAttribute("aria-invalid", "true"));
+  field.querySelectorAll("input").forEach((c) => c.setAttribute("aria-invalid", "true"));
 }
 
 function clearError(field) {
@@ -60,27 +52,17 @@ function clearError(field) {
   field.querySelectorAll("[aria-invalid]").forEach((c) => c.removeAttribute("aria-invalid"));
 }
 
-const numberOf = (v) => {
-  const s = String(v).trim().replace(",", ".");
-  return /^\d{1,3}(\.\d)?$/.test(s) ? Number(s) : NaN;
-};
-
 // בודק שדה אחד. מחזיר הודעת שגיאה או ""
 function problemOf(field) {
-  const id = field.dataset.id;
-  const c = controlOf(field);
-  if (id === "ready") return form.querySelector('input[name="ready"]:checked') ? "" : TEXT.ready;
-  if (c.tagName === "SELECT") return c.value ? "" : TEXT.choose;
+  const c = field.querySelector("input");
   const v = c.value.trim();
-  if (id === "weight") return !v || (numberOf(v) >= 30 && numberOf(v) <= 300) ? "" : TEXT.weight;
-  if (id === "height") return !v || (/^\d{3}$/.test(v) && +v >= 120 && +v <= 230) ? "" : TEXT.height;
   if (c.name === "name") return v.length >= 2 ? "" : TEXT.name;
   if (c.name === "email") return !v ? TEXT.emailEmpty : EMAIL_RE.test(v) ? "" : TEXT.emailBad;
   if (c.name === "phone") return !v ? TEXT.phoneEmpty : normalizeIsraeliMobile(v) ? "" : TEXT.phoneBad;
   return "";
 }
 
-const checkedFields = () => [...form.querySelectorAll(".field[data-required], .field[data-id='weight'], .field[data-id='height']")];
+const checkedFields = () => [...form.querySelectorAll(".field[data-required]")];
 
 function validateAll() {
   let first = null;
@@ -99,37 +81,8 @@ form?.addEventListener("input", (e) => {
   const field = e.target.closest(".field");
   if (field && field.classList.contains("is-invalid") && !problemOf(field)) clearError(field);
 });
-form?.addEventListener("change", (e) => {
-  const field = e.target.closest(".field");
-  if (field && field.classList.contains("is-invalid") && !problemOf(field)) clearError(field);
-});
 
-function questionOf(field) {
-  const label = field.querySelector("[data-q]") || field.querySelector(".field__label");
-  return label.textContent.trim().replace(/\s+/g, " ");
-}
-
-function answerOf(field) {
-  const id = field.dataset.id;
-  if (id === "ready") return form.querySelector('input[name="ready"]:checked')?.value || "";
-  const v = controlOf(field).value.trim();
-  if ((id === "weight" || id === "height") && v) return String(numberOf(v));
-  return v;
-}
-
-function collectAnswers() {
-  const out = [];
-  for (const id of QUESTION_IDS) {
-    const field = fieldById(id);
-    const a = field ? answerOf(field) : "";
-    if (a) out.push({ id, q: questionOf(field), a });
-  }
-  return out;
-}
-
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-async function postJson(url, payload, timeoutMs, keepalive = false) {
+async function postJson(url, payload, timeoutMs) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -138,27 +91,12 @@ async function postJson(url, payload, timeoutMs, keepalive = false) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(payload),
       signal: ctrl.signal,
-      keepalive,
     });
     const data = await res.json().catch(() => null);
     return { status: res.status, data };
   } finally {
     clearTimeout(timer);
   }
-}
-
-// התשובות מגיעות לליד שכבר נוצר. ניסיון ועוד עד 3 ניסיונות חוזרים על תקלת רשת או 5xx
-async function sendQuiz(payload) {
-  for (let attempt = 0; attempt < 4; attempt++) {
-    if (attempt) await sleep(500 * 2 ** (attempt - 1));
-    try {
-      const r = await postJson("/api/quiz", payload, 8000, true);
-      if (r.status < 500) return r.status === 200 && r.data?.ok === true;
-    } catch {
-      // network error or timeout: try again
-    }
-  }
-  return false;
 }
 
 function showStatus(msg) {
@@ -174,7 +112,7 @@ function setBusy(on) {
 }
 
 function focusField(field) {
-  const c = field.querySelector("select, textarea, input:not([type=radio])") || field.querySelector("input");
+  const c = field.querySelector("input");
   field.scrollIntoView({ block: "center", behavior: reduced ? "auto" : "smooth" });
   c?.focus({ preventScroll: true });
 }
@@ -262,9 +200,6 @@ async function onSubmit(e) {
     return;
   }
 
-  // השאלות רשות: בלי אף תשובה אין מה לשלוח לכרטיס
-  const answers = collectAnswers();
-  if (answers.length) await sendQuiz({ session, total: QUESTION_IDS.length, completed: true, answers });
   pixelLead({ name, phone, email }, leadEventId);
   showThanks(name);
 }

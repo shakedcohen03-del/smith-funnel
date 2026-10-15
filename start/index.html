@@ -464,7 +464,7 @@
       <h2 class="h2" id="steps-title">הקאמבק שלך, צעד אחרי צעד.</h2>
     </header>
     <ol class="steps" role="list">
-      <li data-reveal><span class="steps__dot" aria-hidden="true"></span><span class="steps__when">היום</span><h3>עונה על כמה שאלות</h3><p>שתי דקות. הפרטים מגיעים ישירות אליי ולצוות שלי.</p></li>
+      <li data-reveal><span class="steps__dot" aria-hidden="true"></span><span class="steps__when">היום</span><h3>משאיר פרטים</h3><p>חצי דקה. הפרטים מגיעים ישירות אליי ולצוות שלי.</p></li>
       <li data-reveal><span class="steps__dot" aria-hidden="true"></span><span class="steps__when">בהקדם</span><h3>אנחנו מתקשרים אליך</h3><p>שיחה אישית ודיסקרטית. נבין יחד אם זה נכון לך.</p></li>
       <li data-reveal><span class="steps__dot" aria-hidden="true"></span><span class="steps__when">יום 1</span><h3>אבחון ותוכנית ביד</h3><p>תזונה ואימונים מותאמים לחיים שלך היום.</p></li>
       <li data-reveal><span class="steps__dot" aria-hidden="true"></span><span class="steps__when">כל שבוע</span><h3>בקרה והתאמות</h3><p>מעקב צמוד עד שאתה מזהה את עצמך שוב במראה.</p></li>
@@ -546,7 +546,7 @@
       <h2 class="h2" id="apply-title"><span class="ln">בעוד שנה, תסתכל במראה</span><span class="ln em">ותראה גבר שחזר חזק יותר<span class="pt pt--pull">.</span></span></h2>
       <p class="apply__p">רק 3 אנשים ביום. הליווי הזה לא לכל אחד. רק למי שמחליט שזה לא הסוף.</p>
       <p class="apply__now">לא מחר. עכשיו.</p>
-      <p class="apply__p">ענה על כמה שאלות קצרות, ואני והצוות שלי נחזור אליך. אנשים אמיתיים, לא בוט. השיחה דיסקרטית, וההחלטה שלך.</p>
+      <p class="apply__p">השאר שם, טלפון ומייל, ואני והצוות שלי נחזור אליך. אנשים אמיתיים, לא בוט. השיחה דיסקרטית, וההחלטה שלך.</p>
       <div class="callback callback--dark">
         <img class="callback__img" src="/assets/media/smith-avatar-192.webp" width="192" height="192" alt="סמית מחייך" loading="lazy" decoding="async">
         <p class="callback__txt"><span>אני והצוות שלי נחזור אליך</span><small>שיחת התאמה · ללא התחייבות</small></p>
@@ -557,100 +557,12 @@
       <div class="card__body" id="apply-body">
         <div class="card__head">
           <h3 class="card__title">לפני שנדבר</h3>
-          <p class="card__sub">דקה אחת שיכולה לשנות לך את השנה.</p>
+          <p class="card__sub">חצי דקה שיכולה לשנות לך את השנה.</p>
         </div>
 
         <form class="form" id="apply-form" novalidate>
           <fieldset class="step">
-            <legend class="step__title"><span class="step__num" aria-hidden="true">1</span><span>קודם כל, תהיה כן עם עצמך</span></legend>
-
-            <div class="field" data-id="marital">
-              <label class="field__label" for="f-marital"><span data-q>מה המצב המשפחתי שלך?</span> <small class="field__opt">(לא חובה)</small></label>
-              <div class="select">
-                <select id="f-marital" name="marital" aria-describedby="e-marital">
-                  <option value="" selected disabled>בחר תשובה</option>
-                  <option>נשוי</option>
-                  <option>בזוגיות</option>
-                  <option>רווק</option>
-                  <option>גרוש</option>
-                  <option>באמצע גירושין</option>
-                  <option>פרוד</option>
-                  <option>אחר</option>
-                </select>
-              </div>
-              <p class="field__err" id="e-marital" hidden></p>
-            </div>
-
-            <div class="field" data-id="duration">
-              <label class="field__label" for="f-duration"><span data-q>כמה זמן אתה כבר מרגיש ככה?</span> <small class="field__opt">(לא חובה)</small></label>
-              <div class="select">
-                <select id="f-duration" name="duration" aria-describedby="e-duration">
-                  <option value="" selected disabled>בחר תשובה</option>
-                  <option>פחות מחצי שנה</option>
-                  <option>חצי שנה עד שנה</option>
-                  <option>1 עד 3 שנים</option>
-                  <option>יותר מ־3 שנים</option>
-                </select>
-              </div>
-              <p class="field__err" id="e-duration" hidden></p>
-            </div>
-
-            <div class="field" data-id="pain">
-              <label class="field__label" for="f-pain"><span data-q>מה הכי כואב לך היום?</span> <small class="field__opt">(לא חובה)</small></label>
-              <div class="select">
-                <select id="f-pain" name="pain" aria-describedby="e-pain">
-                  <option value="" selected disabled>בחר תשובה</option>
-                  <option>איך אני נראה במראה</option>
-                  <option>הבטן שלא יורדת</option>
-                  <option>עליתי במשקל ולא מצליח לרדת</option>
-                  <option>חוסר אנרגיה ועייפות</option>
-                  <option>חוסר ביטחון בגוף שלי</option>
-                  <option>מתחיל חזק ונשבר אחרי שבוע</option>
-                  <option>האוכל בערבים יוצא משליטה</option>
-                </select>
-              </div>
-              <p class="field__err" id="e-pain" hidden></p>
-            </div>
-
-            <div class="field" data-id="six_months">
-              <label class="field__label" for="f-six"><span data-q>אם לא תשנה כלום ב־6 החודשים הקרובים, איך ייראו החיים שלך?</span> <small class="field__opt">(לא חובה)</small></label>
-              <textarea id="f-six" name="six_months" rows="3" maxlength="600" placeholder="תכתוב בכנות, רק אני והצוות שלי נקרא"></textarea>
-            </div>
-
-            <div class="field" data-id="four_months">
-              <label class="field__label" for="f-four"><span data-q>ואיך אתה רואה את עצמך בעוד 4 חודשים, אם תתחיל היום?</span> <small class="field__opt">(לא חובה)</small></label>
-              <textarea id="f-four" name="four_months" rows="3" maxlength="600" placeholder="איך אתה נראה? איך אתה מרגיש? מה השתנה?"></textarea>
-            </div>
-          </fieldset>
-
-          <fieldset class="step">
-            <legend class="step__title"><span class="step__num" aria-hidden="true">2</span><span>קצת עליך</span></legend>
-
-            <div class="field-row">
-              <div class="field" data-id="weight">
-                <label class="field__label" for="f-weight"><span data-q>משקל היום (ק"ג)</span> <small class="field__opt">(לא חובה)</small></label>
-                <input id="f-weight" name="weight" type="text" inputmode="decimal" autocomplete="off" maxlength="5" placeholder="לדוגמה 92" aria-describedby="e-weight">
-                <p class="field__err" id="e-weight" hidden></p>
-              </div>
-              <div class="field" data-id="height">
-                <label class="field__label" for="f-height"><span data-q>גובה (ס"מ)</span> <small class="field__opt">(לא חובה)</small></label>
-                <input id="f-height" name="height" type="text" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="לדוגמה 178" aria-describedby="e-height">
-                <p class="field__err" id="e-height" hidden></p>
-              </div>
-            </div>
-
-            <fieldset class="field field--radio" data-id="ready" aria-describedby="e-ready">
-              <legend class="field__label"><span data-q>אם אוכל לתת לך את כל מה שאתה רוצה, תהיה מוכן להתחיל כבר היום?</span> <small class="field__opt">(לא חובה)</small></legend>
-              <div class="seg">
-                <label class="seg__opt"><input type="radio" name="ready" value="כן"><span>כן</span></label>
-                <label class="seg__opt"><input type="radio" name="ready" value="לא"><span>לא</span></label>
-              </div>
-              <p class="field__err" id="e-ready" hidden></p>
-            </fieldset>
-          </fieldset>
-
-          <fieldset class="step">
-            <legend class="step__title"><span class="step__num" aria-hidden="true">3</span><span>איך נחזור אליך</span></legend>
+            <legend class="step__title"><span>איך נחזור אליך</span></legend>
 
             <div class="field" data-required>
               <label class="field__label" for="f-name">שם מלא</label>

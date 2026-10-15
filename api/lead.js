@@ -1,7 +1,8 @@
 // POST /api/lead: the details step (name, phone, email). Creates the lead upstream right away.
 import { proxy, clip, param, metaId, sessionOf, normalizeIsraeliMobile, EMAIL_RE, clientIp, userAgent } from './_lib.js';
 
-const QUIZ_TOTAL = 8;
+// The form has no questions anymore: total 0 tells the CRM there is no quiz for this lead
+const QUIZ_TOTAL = 0;
 const TRACKING_KEYS = [
   'fbclid', 'fbc', 'fbp',
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
