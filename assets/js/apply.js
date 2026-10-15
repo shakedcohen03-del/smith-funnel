@@ -1,4 +1,4 @@
-// הטופס בדף (#apply): שם, טלפון ומייל, כולם חובה. שולח ליד ל-/api/lead.
+// הטופס בדף (#apply): שם, טלפון, מייל ואישור תוכן שיווקי (מסומן מראש), כולם חובה. שולח ליד ל-/api/lead.
 import { attribution, tracking, pixelBoot, pixelLead, uuid } from "./tracking.js";
 
 pixelBoot();
@@ -16,6 +16,7 @@ const TEXT = {
   phoneBad: "צריך מספר נייד ישראלי, לדוגמה 050-1234567",
   emailEmpty: "כתוב כתובת מייל",
   emailBad: "כתובת המייל לא נראית תקינה, לדוגמה name@gmail.com",
+  consent: "כדי לשלוח צריך לאשר קבלת תוכן שיווקי",
   missing: "חסרים כמה פרטים. סימנו לך אותם בטופס.",
   failed: "משהו השתבש בשליחה והפרטים לא נקלטו. נסה שוב בעוד רגע, או כתוב לי ישירות בוואטסאפ.",
   limited: "היו כמה ניסיונות בזמן קצר. נסה שוב בעוד דקה.",
@@ -55,6 +56,7 @@ function clearError(field) {
 // בודק שדה אחד. מחזיר הודעת שגיאה או ""
 function problemOf(field) {
   const c = field.querySelector("input");
+  if (c.type === "checkbox") return c.checked ? "" : TEXT.consent;
   const v = c.value.trim();
   if (c.name === "name") return v.length >= 2 ? "" : TEXT.name;
   if (c.name === "email") return !v ? TEXT.emailEmpty : EMAIL_RE.test(v) ? "" : TEXT.emailBad;
@@ -167,8 +169,8 @@ async function onSubmit(e) {
         name,
         phone,
         email,
-        marketing_consent: false,
-        consent_text: null,
+        marketing_consent: true,
+        consent_text: document.getElementById("consent-text").textContent.trim(),
         website: document.getElementById("f-website").value,
         ...attribution(),
         tracking: tracking({ lead_event_id: leadEventId }),
@@ -189,6 +191,9 @@ async function onSubmit(e) {
     } else if (code === "invalid_email") {
       setError(document.getElementById("f-email").closest(".field"), TEXT.emailBad);
       showStatus(TEXT.emailBad);
+    } else if (code === "consent_required") {
+      setError(document.getElementById("f-consent").closest(".field"), TEXT.consent);
+      showStatus(TEXT.consent);
     } else if (code === "invalid_name") {
       setError(document.getElementById("f-name").closest(".field"), TEXT.name);
       showStatus(TEXT.name);

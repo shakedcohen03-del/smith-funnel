@@ -35,14 +35,15 @@ function buildLead(body, req) {
   const session = sessionOf(body.session);
   if (!session) return { error: 'invalid_session' };
 
-  const consent = body.marketing_consent === true;
+  // The form sends only with the marketing consent box checked (checked by default)
+  if (body.marketing_consent !== true) return { error: 'consent_required' };
   const payload = {
     session,
     name,
     phone,
     email,
-    marketing_consent: consent,
-    consent_text: consent ? clip(body.consent_text, 500) || null : null,
+    marketing_consent: true,
+    consent_text: clip(body.consent_text, 500) || null,
     total: QUIZ_TOTAL,
   };
   const ref = param(body.ref, 200);
