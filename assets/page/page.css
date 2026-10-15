@@ -657,7 +657,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--g
   content: "!"; flex: none; display: grid; place-items: center; width: 18px; height: 18px; margin-top: 1px; border-radius: 50%;
   background: var(--green-d); color: var(--white); font-size: 12px; font-weight: 700; line-height: 1;
 }
-/* אישור תוכן שיווקי: מסומן מראש, וחובה כדי לשלוח */
+/* אישור תוכן שיווקי: הגולש מסמן בעצמו, וחובה כדי לשלוח */
 .check { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 15.5px; line-height: 1.5; color: var(--text); }
 .check input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--green); cursor: pointer; }
 .field.is-invalid .check input { outline: 2px solid var(--text); outline-offset: 2px; }

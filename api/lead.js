@@ -35,7 +35,7 @@ function buildLead(body, req) {
   const session = sessionOf(body.session);
   if (!session) return { error: 'invalid_session' };
 
-  // The form sends only with the marketing consent box checked (checked by default)
+  // The form sends only with the marketing consent box checked (the visitor checks it)
   if (body.marketing_consent !== true) return { error: 'consent_required' };
   const payload = {
     session,

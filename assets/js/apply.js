@@ -1,4 +1,4 @@
-// הטופס בדף (#apply): שם, טלפון, מייל ואישור תוכן שיווקי (מסומן מראש), כולם חובה. שולח ליד ל-/api/lead.
+// הטופס בדף (#apply): שם, טלפון, מייל ואישור תוכן שיווקי (הגולש מסמן בעצמו), כולם חובה. שולח ליד ל-/api/lead.
 import { attribution, tracking, pixelBoot, pixelLead, uuid } from "./tracking.js";
 
 pixelBoot();
