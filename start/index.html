@@ -8,6 +8,17 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0B5136">
 <meta name="format-detection" content="telephone=no">
+<!-- Meta Pixel: the standard base code, loaded right away so a quick bounce from an ad still counts as a PageView. Off on localhost -->
+<script>
+if (location.protocol !== "file:" && !/^(localhost|127\.|0\.0\.0\.0|\[::1\]|192\.168\.)/.test(location.hostname)) {
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+fbq.disablePushState = true;
+fbq("set", "autoConfig", false, "1368937164234363");
+fbq("init", "1368937164234363");
+fbq("track", "PageView");
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1368937164234363&amp;ev=PageView&amp;noscript=1"></noscript>
 <meta property="og:type" content="website">
 <meta property="og:locale" content="he_IL">
 <meta property="og:title" content="התגרשת? תתאמן. · סמית">

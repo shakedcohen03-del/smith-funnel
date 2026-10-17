@@ -60,6 +60,7 @@ export function tracking(extra) {
 const local = location.protocol === "file:" || /^(localhost|127\.|0\.0\.0\.0|\[::1\]|192\.168\.)/.test(location.hostname);
 export const pixelOn = !local;
 
+// בדף הנחיתה הפיקסל נטען כבר ב-<head> (הקוד הרגיל של מטא), ואז זה לא עושה כלום. נשאר לדפים בלי הקוד הזה
 export function pixelBoot() {
   if (!pixelOn || window.fbq) return;
   const n = (window.fbq = function () {
