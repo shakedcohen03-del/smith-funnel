@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#021c42">
+<title>SMITHFIT | שאלון אפיון בחינם</title>
+<meta name="description" content="שאלון אפיון קצר שיבנה לך תוכנית אימון ותפריט תזונה מותאמים לחיים שלך, מבית SMITHFIT של סמית'.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/gift/assets/fonts/fonts.css">
+<link rel="stylesheet" href="/gift/assets/css/site.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- UI icons, 24 grid -->
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.6v.01"/></g></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 7a7 7 0 0 1 0 10"/></g></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4.5v15M6 13.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <!-- choice icons: Tabler Icons (MIT) -->
+    <symbol id="a-man" viewBox="0 0 24 24"><path d="M10 16v5 M14 16v5 M9 9h6l-1 7h-4z M5 11c1.333 -1.333 2.667 -2 4 -2 M19 11c-1.333 -1.333 -2.667 -2 -4 -2 M12 4m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="a-woman" viewBox="0 0 24 24"><path d="M10 16v5 M14 16v5 M8 16h8l-2 -7h-4z M5 11c1.667 -1.333 3.333 -2 5 -2 M19 11c-1.667 -1.333 -3.333 -2 -5 -2 M12 4m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="a-salad" viewBox="0 0 24 24"><path d="M4 11h16a1 1 0 0 1 1 1v.5c0 1.5 -2.517 5.573 -4 6.5v1a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-1c-1.687 -1.054 -4 -5 -4 -6.5v-.5a1 1 0 0 1 1 -1z M18.5 11c.351 -1.017 .426 -2.236 .5 -3.714v-1.286h-2.256c-2.83 0 -4.616 .804 -5.64 2.076 M5.255 11.008a12.204 12.204 0 0 1 -.255 -2.008v-1h1.755c.98 0 1.801 .124 2.479 .35 M8 8l1 -4l4 2.5 M13 11v-.5a2.5 2.5 0 1 0 -5 0v.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="a-meat" viewBox="0 0 24 24"><path d="M13.62 8.382l1.966 -1.967a2 2 0 1 1 3.414 -1.415a2 2 0 1 1 -1.413 3.414l-1.82 1.821 M5.904 18.596c2.733 2.734 5.9 4 7.07 2.829c1.172 -1.172 -.094 -4.338 -2.828 -7.071c-2.733 -2.734 -5.9 -4 -7.07 -2.829c-1.172 1.172 .094 4.338 2.828 7.071z M7.5 16l1 1 M12.975 21.425c3.905 -3.906 4.855 -9.288 2.121 -12.021c-2.733 -2.734 -8.115 -1.784 -12.02 2.121" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="a-gym" viewBox="0 0 24 24"><path d="M2 12h1 M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2 M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z M9 12h6 M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2 M22 12h-1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="a-home" viewBox="0 0 24 24"><path d="M5 12l-2 0l9 -9l9 9l-2 0 M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7 M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z M12 8l0 13 M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7 M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ VIEW 1: QUIZ (/) ============ -->
+<div data-view="quiz" data-title="SMITHFIT | שאלון אפיון בחינם">
+  <header class="qtop">
+    <div class="qtop__bar">
+      <button class="qtop__back" type="button" id="q-back" aria-label="חזרה לשלב הקודם" hidden><svg class="ico"><use href="#i-back"/></svg></button>
+      <a class="mark" href="/gift" aria-label="SMITHFIT, ליווי אונליין"><span class="mark__word">SMITH<b>FIT</b></span><span class="mark__sub">ליווי אונליין</span></a>
+    </div>
+    <div class="progress" id="q-progress" aria-hidden="true"></div>
+  </header>
+
+  <main class="wrap quiz">
+    <form id="quiz-form" novalidate>
+
+      <section class="step" data-step="gender">
+        <p class="eyebrow">לאנשים עם לו״ז עמוס · שאלון של דקה</p>
+        <h1 class="h1">שאלון אפיון בחינם שיבנה לך תוכנית אימון ותפריט תזונה <u>מותאמים לחיים שלך</u></h1>
+        <div class="coach"><img src="/gift/assets/img/smith/coach-640.webp" alt="סמית'" width="44" height="44"><span><strong>סמית'</strong>, מאמן כושר ותזונה · 11 שנות ניסיון, כמעט 4,000 מתאמנים</span></div>
+        <p class="q">עם מי אני?</p>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="gender" value="גבר" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-man"/></svg></span><span class="lbl">גבר</span></label>
+          <label class="choice"><input type="radio" name="gender" value="אישה" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-woman"/></svg></span><span class="lbl">אישה</span></label>
+        </div>
+      </section>
+
+      <section class="step" data-step="goal" hidden>
+        <p class="eyebrow">שאלה 2 מתוך 6</p>
+        <p class="q">מה המטרה שלך?</p>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="goal" value="להתחטב" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-salad"/></svg></span><span class="lbl">להתחטב</span></label>
+          <label class="choice"><input type="radio" name="goal" value="לעלות במסה" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-meat"/></svg></span><span class="lbl">לעלות במסה</span></label>
+        </div>
+      </section>
+
+      <section class="step" data-step="gym" hidden>
+        <p class="eyebrow">שאלה 3 מתוך 6</p>
+        <p class="q">יש לך חדר כושר?</p>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="gym" value="יש לי גישה לחדר כושר" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-gym"/></svg></span><span class="lbl">יש לי גישה לחדר כושר</span></label>
+          <label class="choice"><input type="radio" name="gym" value="אין לי, אתאמן בבית" data-auto><span class="tick"><svg class="ico"><use href="#i-check"/></svg></span><span class="art"><svg><use href="#a-home"/></svg></span><span class="lbl">אין לי, אתאמן בבית</span></label>
+        </div>
+      </section>
+
+      <section class="step" data-step="body" hidden>
+        <p class="eyebrow">שאלה 4 מתוך 6</p>
+        <p class="q">מה הגובה והמשקל שלך?</p>
+        <div class="slider">
+          <div class="slider__top"><label for="height">גובה</label><span class="slider__val" id="height-val">175</span></div>
+          <input type="range" id="height" name="height" min="140" max="220" step="1" value="175" aria-label="גובה בסנטימטרים">
+          <div class="slider__ends"><span>140 ס״מ</span><span>220 ס״מ</span></div>
+        </div>
+        <div class="slider">
+          <div class="slider__top"><label for="weight">משקל</label><span class="slider__val" id="weight-val">80</span></div>
+          <input type="range" id="weight" name="weight" min="40" max="200" step="1" value="80" aria-label="משקל בקילוגרמים">
+          <div class="slider__ends"><span>40 ק״ג</span><span>200 ק״ג</span></div>
+        </div>
+      </section>
+
+      <section class="step" data-step="bmi" hidden>
+        <p class="eyebrow">התוצאה שלך</p>
+        <p class="q">תמונת המצב שלך לפני שמתחילים</p>
+        <div class="bmi">
+          <span class="bmi__k">מדד מסת הגוף שלך (BMI)</span>
+          <div class="bmi__row"><span class="bmi__s" id="bmi-status"><i></i><span></span></span><span class="bmi__v" id="bmi-val">0</span></div>
+          <div class="bmi__scale" aria-hidden="true"><span class="bmi__pin" id="bmi-pin"></span></div>
+          <div class="bmi__ends" aria-hidden="true"><span>נמוך</span><span>תקין</span><span>מוגבר</span><span>גבוה</span></div>
+          <p class="bmi__msg" id="bmi-msg"></p>
+        </div>
+      </section>
+
+      <section class="step" data-step="why" hidden>
+        <p class="eyebrow">שאלה 5 מתוך 6</p>
+        <p class="q">שאלה אחרונה! למה חשוב לך לשנות את הגוף שלך?</p>
+        <textarea class="field" name="why" id="why" maxlength="2000" placeholder="כתוב/כתבי במילים שלך..." aria-label="למה חשוב לך לשנות את הגוף שלך?"></textarea>
+      </section>
+
+      <section class="step" data-step="contact" hidden>
+        <p class="eyebrow">כמעט סיימנו</p>
+        <p class="q">לאן לשלוח את התפריט ותוכנית האימונים בחינם?</p>
+        <div class="fields">
+          <input class="field" type="text" name="name" id="q-name" maxlength="20" autocomplete="name" placeholder="איך קוראים לך?" aria-label="איך קוראים לך?">
+          <input class="field" type="tel" name="phone" id="q-phone" inputmode="numeric" autocomplete="tel" placeholder="מה המספר שלך?" aria-label="מה המספר שלך?">
+          <input class="field" type="text" name="age" id="q-age" inputmode="numeric" maxlength="2" placeholder="מה הגיל שלך?" aria-label="מה הגיל שלך?">
+          <select class="field" name="status" id="q-status" aria-label="מה הסטטוס המשפחתי שלך?" hidden>
+            <option value="">מה הסטטוס המשפחתי שלך?</option>
+            <option>רווק/ה</option><option>בזוגיות</option><option>נשוי/אה</option><option>גרוש/ה</option><option>אחר</option>
+          </select>
+          <label class="check"><input type="checkbox" name="terms" id="q-terms"><span>אני מאשר/ת שקראתי ואני מסכים/ה <a href="/privacy" target="_blank">למדיניות הפרטיות</a></span></label>
+          <label class="check"><input type="checkbox" name="consent" id="q-consent"><span>אני מאשר/ת לקבל תוכן בחינם שיעזור לי להגיע לגוף שאני רוצה</span></label>
+        </div>
+      </section>
+
+      <div class="fields" style="margin-top:22px">
+        <button class="btn is-off" type="button" id="q-next"><span>לשלב הבא</span><svg class="ico"><use href="#i-next"/></svg></button>
+        <button class="btn btn--gold is-off" type="submit" id="q-submit" hidden>תבנה לי תוכנית מותאמת בחינם</button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<!-- ============ VIEW 2: OFFER (/offer) ============ -->
+<div data-view="offer" data-title="לא לסגור את הדף!" hidden>
+  <p class="notice"><svg class="ico"><use href="#i-check"/></svg>התפריט ותוכנית האימונים בדרך אליך לוואטסאפ</p>
+  <main class="wrap offer">
+    <p class="stop"><svg class="ico"><use href="#i-stop"/></svg>רגע, לא לסגור את הדף</p>
+    <h1 class="h1">יש לך הזדמנות חד פעמית להצטרף לליווי של סמית' <u>ולקבל 3 חודשים נוספים בחינם</u></h1>
+    <div class="gift"><svg class="ico"><use href="#i-gift"/></svg><b dir="ltr">+3</b><p><strong>חודשי ליווי מתנה</strong>לכל מי שמצטרף אחרי שיחת ההתאמה. ההטבה לא תופיע שוב.</p></div>
+
+    <div class="video">
+      <div class="video__bar"><span><svg class="ico"><use href="#i-sound"/></svg>צפה עכשיו בסרטון עם הקול</span><time>1:20</time></div>
+      <div class="video__frame tall">
+        <video src="/gift/assets/video/v2.mp4" poster="/gift/assets/video/v2.webp" controls playsinline preload="none"></video>
+      </div>
+    </div>
+
+    <form class="formcard" id="offer-form" novalidate>
+      <h2>לשיחת התאמה ולמימוש 3 החודשים במתנה<svg class="ico"><use href="#i-down"/></svg></h2>
+      <p class="lead">הטופס הזה הוא רק למי שרוצה את הליווי הצמוד שלנו, <strong>כדי להגיע למטרה שלו בתוך חצי שנה ולשמור עליה גם אחרי.</strong></p>
+      <input class="field" type="text" name="name" id="o-name" maxlength="20" autocomplete="name" placeholder="שם" aria-label="שם">
+      <input class="field" type="tel" name="phone" id="o-phone" inputmode="numeric" autocomplete="tel" placeholder="טלפון" aria-label="טלפון">
+      <p class="q">כמה זמן ניסית לשנות את הגוף שלך?</p>
+      <div class="pills">
+        <label class="pill"><input type="radio" name="tried" value="מתחת ל-3 חודשים">מתחת ל-3 חודשים</label>
+        <label class="pill"><input type="radio" name="tried" value="חצי שנה">חצי שנה</label>
+        <label class="pill"><input type="radio" name="tried" value="שנה ומעלה">שנה ומעלה</label>
+        <label class="pill"><input type="radio" name="tried" value="כל החיים…">כל החיים…</label>
+      </div>
+      <p class="q">למה חשוב לך לעשות שינוי דווקא עכשיו?</p>
+      <textarea class="field" name="now" id="o-now" maxlength="2000" placeholder="כתוב/כתבי במילים שלך..." aria-label="למה חשוב לך לעשות שינוי דווקא עכשיו?"></textarea>
+      <label class="check"><input type="checkbox" name="paid" id="o-paid"><span><strong>אני מבין/ה שהליווי בתשלום</strong>, וההטבה היא 3 חודשים נוספים בליווי בהתאם למסלול שאבחר</span></label>
+      <button class="btn is-off" type="submit" id="o-submit">לשיחת ייעוץ בחינם ומימוש 3 החודשים</button>
+      <div class="faces" data-faces><p><strong>כמעט 4,000 מתאמנים</strong>כבר עשו את זה עם סמית'</p></div>
+    </form>
+  </main>
+</div>
+
+<!-- ============ VIEW 3: THANKS (/thanks) ============ -->
+<div data-view="thanks" data-title="הפרטים שלך נשלחו בהצלחה!" hidden>
+  <p class="notice"><svg class="ico"><use href="#i-check"/></svg>הפרטים שלך נשלחו בהצלחה</p>
+  <main>
+    <div class="wrap thanks">
+      <a class="mark thanks__mark" href="/gift" aria-label="SMITHFIT"><span class="mark__word">SMITH<b>FIT</b></span><span class="mark__sub">ליווי אונליין</span></a>
+      <h1 class="h1">יועץ מהצוות של סמית' ייצור איתך קשר, <u>ויחד נגיע לגוף שתמיד רצית</u></h1>
+      <div class="gift gift--slim"><svg class="ico"><use href="#i-gift"/></svg><p><strong>3 חודשים מתנה שמורים לך</strong>עד שיחת ההתאמה עם הצוות</p></div>
+      <p class="eyebrow">בינתיים, תכיר את סמית'</p>
+      <div class="video">
+        <div class="video__bar"><span><svg class="ico"><use href="#i-sound"/></svg>הכתבה על סמית' בכאן 11</span></div>
+        <div class="video__frame" data-yt="3UGzPLtF0e4">
+          <img src="/gift/assets/img/media/tv-3UGzPLtF0e4-1280.webp" alt="סמית' בכתבה בכאן 11" loading="lazy">
+          <button class="play" type="button" aria-label="הפעלת הכתבה"><span><svg class="ico"><use href="#i-play"/></svg></span></button>
+        </div>
+      </div>
+      <a class="btn btn--line" href="https://www.instagram.com/mrsmith.fit/" target="_blank" rel="noopener"><span>מעבר לאינסטגרם של סמית'</span><svg class="ico"><use href="#i-next"/></svg></a>
+    </div>
+
+    <section class="paper">
+      <div class="wrap sec">
+        <div class="sec__head"><p class="eyebrow">תוצאות אמיתיות</p><h2>הנה כמה מתאמנים שכבר עשו את השינוי</h2></div>
+        <div class="ba" data-results="12"></div>
+      </div>
+    </section>
+
+    <section class="paper">
+      <div class="wrap sec">
+        <div class="sec__head"><p class="eyebrow">במילים שלהם</p><h2>אל תאמינו למילה שאני אומר. תראו מה הם מספרים.</h2></div>
+        <div class="vids" data-videos></div>
+      </div>
+    </section>
+
+    <section class="paper">
+      <div class="wrap sec">
+        <div class="sec__head"><p class="eyebrow">ויש עוד</p><h2>אני יכול להמשיך ככה כל היום...</h2></div>
+        <div class="msgs" data-msgs></div>
+      </div>
+    </section>
+
+    <section class="pine">
+      <div class="wrap sec">
+        <div class="sec__head"><p class="eyebrow">לפני השיחה</p><h2>שאלות נפוצות</h2></div>
+        <div class="faq" data-faq></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer class="foot">
+  <a class="mark" href="/gift" aria-label="SMITHFIT"><span class="mark__word">SMITH<b>FIT</b></span><span class="mark__sub">ליווי אונליין</span></a>
+  <nav><a href="/privacy">מדיניות פרטיות</a><a href="/accessibility">הצהרת נגישות</a><span>© 2026 SMITHFIT</span></nav>
+</footer>
+
+<div class="cookie" id="cookie" role="region" aria-label="הודעת עוגיות">
+  <p>האתר משתמש בעוגיות לצורכי תפעול, מדידה ושיפור החוויה, בהתאם <a href="/privacy">למדיניות הפרטיות</a>.</p>
+  <button type="button" id="cookie-x">הבנתי</button>
+</div>
+
+<script src="/gift/assets/js/api.js"></script>
+<script src="/gift/assets/js/proof.js"></script>
+<script src="/gift/assets/js/funnel.js"></script>
+</body>
+</html>
