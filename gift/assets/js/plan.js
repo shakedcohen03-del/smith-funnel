@@ -98,12 +98,12 @@
   }
 
   function menuBody(d) {
-    const t = d.targets;
+    const t = d.targets, m = d.menu.totals || {};
     return `<div class="stats">
-        <div><b>${num(t.kcal)}</b><span>קלוריות ביום</span></div>
-        <div><b>${t.prot}</b><span>גרם חלבון</span></div>
-        <div><b>${t.carb}</b><span>גרם פחמימה</span></div>
-        <div><b>${t.fat}</b><span>גרם שומן</span></div>
+        <div><b>${num(Math.round((m.calories || t.kcal) / 10) * 10)}</b><span>קלוריות ביום</span></div>
+        <div><b>${m.protein || t.prot}</b><span>גרם חלבון</span></div>
+        <div><b>${m.carbs ?? t.carb}</b><span>גרם פחמימה</span></div>
+        <div><b>${m.fat || t.fat}</b><span>גרם שומן</span></div>
       </div>
       <p class="doc__note">הגוף שלך שורף כ-${num(t.tdee)} קלוריות ביום. ${V.cut ? 'לחיטוב מורידים 25%' : 'לעלייה במסה מוסיפים 20%'}, וחלבון לפי 1.8 גרם לכל ק״ג.</p>
       ${d.menu.meals.map(mealCard).join('')}

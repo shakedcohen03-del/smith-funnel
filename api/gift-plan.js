@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const complete = Boolean(body.menu && body.workout);
     res.statusCode = 200;
     res.setHeader('content-type', 'application/json; charset=utf-8');
-    res.setHeader('cache-control', complete ? 'public, max-age=300, s-maxage=86400, stale-while-revalidate=604800' : 'no-store');
+    res.setHeader('cache-control', complete ? 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400' : 'no-store');
     res.end(JSON.stringify({ ok: true, targets: body.targets, menu: body.menu, workout: body.workout }));
   } catch (err) {
     console.error(`[gift-plan] upstream unreachable: ${err?.name || 'Error'}`);
