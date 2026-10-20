@@ -105,7 +105,7 @@
         <div><b>${m.carbs ?? t.carb}</b><span>גרם פחמימה</span></div>
         <div><b>${m.fat || t.fat}</b><span>גרם שומן</span></div>
       </div>
-      <p class="doc__note">הגוף שלך שורף כ-${num(t.tdee)} קלוריות ביום. ${V.cut ? 'לחיטוב מורידים 25%' : 'לעלייה במסה מוסיפים 20%'}, וחלבון לפי 1.8 גרם לכל ק״ג.</p>
+      <p class="doc__note">הגוף שלך שורף כ-${num(t.tdee)} קלוריות ביום. ${V.cut ? 'לחיטוב מורידים 25%' : 'לעלייה במסה מוסיפים 20%'}, וחלבון של כ-${(Number(m.protein || t.prot) / person.w).toFixed(1)} גרם לכל ק״ג גוף.</p>
       ${d.menu.meals.map(mealCard).join('')}
       ${notesHtml(d.menu.notes)}
       <p class="doc__legal">התפריט נבנה אוטומטית לפי הנתונים שמילאת, ואינו מותאם להעדפות, למצב רפואי או לרגישויות. אינו מהווה ייעוץ רפואי או תזונתי.</p>
@@ -123,7 +123,7 @@
   }
 
   function trainingBody(w) {
-    const row = e => `<li><div><strong>${esc(e.name)}</strong></div><span class="ex__s">${e.sets != null && e.reps != null ? `${esc(e.sets)} × ${esc(e.reps)}` : e.sets != null ? `${esc(e.sets)} סטים` : ''}</span>${e.rest ? `<span class="ex__r">מנוחה ${esc(e.rest)}</span>` : ''}</li>`;
+    const row = e => `<li><div><strong>${esc(e.name)}</strong></div><span class="ex__s">${e.sets != null && e.reps != null ? `${esc(e.sets)} סטים · ${esc(e.reps)} חזרות` : e.sets != null ? `${esc(e.sets)} סטים` : ''}</span>${e.rest ? `<span class="ex__r">מנוחה ${esc(e.rest)}</span>` : ''}</li>`;
     const card = x => `<article class="meal"><header><h3>${esc(x.name)}</h3><span>${x.exercises.length} תרגילים</span></header><ol class="ex">${x.exercises.map(row).join('')}</ol></article>`;
     return `${w.workouts.map(card).join('')}
       <p class="doc__legal">התוכנית כללית ואינה מותאמת אישית. לפני תחילת פעילות גופנית מומלץ להתייעץ עם רופא, בעיקר אם יש מגבלה רפואית.</p>
