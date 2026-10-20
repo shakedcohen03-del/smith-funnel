@@ -123,8 +123,10 @@
     const f = new FormData(form);
     Object.assign(lead, Object.fromEntries(f.entries()), { phone: digits(f.get('phone')) });
     const quiz = { gender: lead.gender, goal: lead.goal, gym: lead.gym, height: lead.height, weight: lead.weight, age: lead.age, status: lead.status || '', why: lead.why };
-    const r = await window.GiftApi.send({ stage: 'quiz', name: lead.name, phone: lead.phone, quiz, plan_slug: window.GiftApi.planSlug(quiz) });
+    const ev = window.Px.uuid();
+    const r = await window.GiftApi.send({ stage: 'quiz', name: lead.name, phone: lead.phone, quiz, plan_slug: window.GiftApi.planSlug(quiz) }, ev);
     if (!r.ok) return failed(submit, label, r.message);
+    window.Px.track('Lead', lead, ev);
     show('offer', true);
   });
 
@@ -144,8 +146,10 @@
     const label = oSubmit.textContent;
     oSubmit.classList.add('is-off'); oSubmit.textContent = 'רגע...';
     const f = new FormData(offer);
-    const r = await window.GiftApi.send({ stage: 'call', name: f.get('name'), phone: digits(f.get('phone')), call: { tried: f.get('tried'), now: f.get('now') } });
+    const ev = window.Px.uuid(), who = { name: f.get('name'), phone: digits(f.get('phone')) };
+    const r = await window.GiftApi.send({ stage: 'call', ...who, call: { tried: f.get('tried'), now: f.get('now') } }, ev);
     if (!r.ok) return failed(oSubmit, label, r.message);
+    window.Px.track('CompleteRegistration', who, ev);
     show('thanks', true);
   });
 

@@ -12,6 +12,13 @@
     { id: 'v5', cap: 'עוד כמה מהשינויים' },
   ];
   const SHORTS = ['6Bv75odFMVw', 'MFsxB8JP1_s', 'hv9WOOuPMWw'];
+  // real WhatsApp messages from clients, word for word (owner sent them 20.10). Never add invented ones.
+  const WA = [
+    "אז אחרי חצי שנה ו6.5 קילו פחות רציתי להגיד לכם קטי וסמיט תודה מכל הלב \nמבחינתי לקבל בתוכנית מאמן צמוד  ותזונאית צמודה זה שילוב מנצח להשגת תוצאות, נכון אי אפשר לאכול מה שרוצים מתי שרוצים חייב משמעת עצמית ולהקדיש זמן לאימונים, אבל גם לא צריך לאכול חסה כל היום לא עשיתי אף פעם תוכנית אונליין והיו לי חששות בהתחלה, אבל פשוט לא עזבתם אותי לרגע לבד ומהר מאוד תוצאות הגיעו. אין קיצורי קטי וסמיט אתכם בהחלט רואים משקל שיורד גוף שמתחזק ואורח חיים בריא❤️❤️❤️❤️",
+    "רוצה לפרגן מכל הלב למאמן כושר ומלווה תזונאית אלופים! 💪❤️\n\nהצלחתי להגיע לתוצאות מדהימות ולרדת במשקל. קיבלתי ביטחון עצמי, כוח ורצון להתמיד .\n\nתודה על הליווי המקצועי, המוטיבציה והתמיכה לאורך כל הדרך. תודה על הסבלנות ועל הדחיפה קדימה, היה מאתגר אך שווה. אין ספק שההצלחה הזו היא גם בזכותך! 🙏🔥\n\nממליץ לכל מי שרוצה לעשות שינוי אמיתי ולהגיע לתוצאות! 🏆",
+    "הייתי שוקל 95.20 וחלטתי לעשות שינוי אז סמית קפץ לי במודעות חלטתי לקחת את עצמי בשתי ידים לקחתי את הליוי בהתחלה הייתי מתקשה לעשות כל מיני דברים אם הזמן התחלתי להתחזק לאוכל נכון בזכות הליוי למדתי רבה דברים על עצמי ועל אוכל ממליץ בחום למי שרוצה לעשות שינוי 🙏🏽",
+    "קודם כל הכי טוב התהליך זה המענה המהיר, לכל שאלה או תהייה יש מענה מיידי, התמיכה היא באמת מעולה.\n\nירדיתי קרוב מעל15 קילו (עדיין לא ביעד הקוביות) אבל זה כבר בדרך... \n\nהתפריט מאוד ברור"
+  ];
   const FAQ = [
     ['כבר ניסיתי לרדת במשקל ולא הצלחתי, במה זה שונה?', 'כי עד היום עשית את זה לבד, עם תוכנית שלא נבנתה לחיים שלך. כאן מקבלים תפריט ותוכנית אימונים שנבנים בדיוק בשבילך, בקרה כל שבוע, וקו ישיר לסמית\' בוואטסאפ שמחזיק אותך דווקא כשקשה.'],
     ['באמת לא צריך לספור קלוריות?', 'באמת! התפריט כבר מחושב בשבילך, עם כמויות פשוטות של אוכל שאתה אוהב. אתה רק שולח לנו כל יום מה אכלת, ואנחנו רואים, מכוונים ומתקנים במקומך.'],
@@ -52,6 +59,11 @@
       <div class="shorts">${SHORTS.map(id => `<a class="short" href="https://www.youtube.com/shorts/${id}" target="_blank" rel="noopener" aria-label="סיפור של מתאמן ביוטיוב">${img(`/gift/assets/img/media/short-${id}-540.webp`, '')}<span>${PLAY}</span></a>`).join('')}</div>`;
   }
 
+  const esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function wa(el) {
+    el.innerHTML = WA.map(t => `<figure class="wa"><div class="wa__b">${esc(t)}</div><figcaption>הודעה ממתאמן בוואטסאפ</figcaption></figure>`).join('');
+  }
+
   function faq(el) {
     el.innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}<svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>${a}</p></details>`).join('');
   }
@@ -84,6 +96,7 @@
       root.querySelectorAll('[data-results]:not([data-done])').forEach(el => { results(el); el.dataset.done = 1; });
       root.querySelectorAll('[data-videos]:not([data-done])').forEach(el => { videos(el); el.dataset.done = 1; });
       root.querySelectorAll('[data-msgs]:not([data-done])').forEach(el => { msgs(el); el.dataset.done = 1; });
+      root.querySelectorAll('[data-wa]:not([data-done])').forEach(el => { wa(el); el.dataset.done = 1; });
       root.querySelectorAll('[data-faq]:not([data-done])').forEach(el => { faq(el); el.dataset.done = 1; });
       root.querySelectorAll('[data-faces]:not([data-done])').forEach(el => { faces(el); el.dataset.done = 1; });
     },

@@ -52,6 +52,18 @@
     {
       "source": "/gift/plan/:path*",
       "destination": "/gift/plan"
+    },
+    {
+      "source": "/lp",
+      "destination": "/lp/index"
+    },
+    {
+      "source": "/lp/thanks",
+      "destination": "/lp/index"
+    },
+    {
+      "source": "/lp/video",
+      "destination": "/lp/index"
     }
   ],
   "headers": [

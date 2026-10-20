@@ -1,4 +1,4 @@
-// Sends each funnel stage to /api/gift (this site's own server, which forwards it to the CRM).
+// Sends each funnel stage to /api/gift (this site's own server, which forwards it to the CRM). Used by /gift and /lp.
 (function () {
   const tracking = {};
   new URLSearchParams(location.search).forEach((v, k) => {
@@ -14,12 +14,12 @@
     return `${sex}-${goal}${gym}-${q.height}-${q.weight}-${q.age}`;
   }
 
-  async function send(payload) {
+  async function send(payload, eventId) {
     try {
       const r = await fetch('/api/gift', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...payload, tracking, website: '' }),
+        body: JSON.stringify({ ...payload, tracking: eventId ? { ...tracking, lead_event_id: eventId } : tracking, website: '' }),
       });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) return { ok: true };
