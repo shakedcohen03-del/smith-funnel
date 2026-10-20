@@ -323,6 +323,36 @@ select.field option { color: var(--ink); }
 
 .form-err { margin: 2px 0 0; padding: 10px 12px; border-radius: 10px; background: #fdecea; color: #8a1c12; font-size: 15px; font-weight: 600; text-align: center; }
 
+/* centered, big text like the reference funnel */
+body { font-size: 18px; }
+.h1 { text-align: center; font-size: clamp(32px, 9vw, 46px); line-height: 1.12; }
+.q { text-align: center; font-size: 27px; }
+.eyebrow { justify-content: center; text-align: center; }
+.eyebrow::after { content: ""; width: 22px; height: 2px; background: var(--gold); }
+.coach { justify-content: center; text-align: center; }
+.choice .lbl { font-size: 23px; }
+.bmi__msg { text-align: center; }
+.stop, .thanks__mark { justify-self: center; }
+.gift { justify-content: center; text-align: center; }
+.gift p strong { font-size: 24px; }
+.formcard h2 { justify-content: center; text-align: center; font-size: 32px; }
+.formcard .lead, .formcard .q { text-align: center; }
+.formcard .lead { font-size: 18px; }
+.sec__head { justify-items: center; text-align: center; }
+.doc__lead, .doc__note, .doc__legal, .faces p { text-align: center; }
+.doc__lead { font-size: 18px; }
+.meal header { flex-direction: column; align-items: center; text-align: center; gap: 2px; }
+.meal h3 { font-size: 24px; }
+.meal h3 small { font-size: 15px; font-weight: 600; color: var(--ink-2); }
+.meal h4 { margin: 14px 16px 0; font-size: 19px; text-align: center; color: var(--pine); }
+.foods { list-style: none; margin: 0; padding: 6px 14px 14px; display: grid; gap: 4px; }
+.foods li { padding: 10px 4px; border-bottom: 1px dashed #dfe6e0; text-align: center; font-size: 18px; line-height: 1.45; color: var(--ink); }
+.foods li:last-child { border-bottom: 0; }
+.foods small { display: block; margin-top: 2px; font-size: 14px; color: var(--ink-2); }
+.doc__wait { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 30px 0; font-size: 19px; font-weight: 700; color: var(--pine); text-align: center; }
+.spin { width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--paper-2); border-top-color: var(--gold); animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* footer */
 .foot { padding-block: 34px calc(30px + env(safe-area-inset-bottom, 0px)); display: grid; justify-items: center; gap: 14px; text-align: center; border-top: 1px solid var(--line); }
 .foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; font-size: 14px; color: var(--sage); }

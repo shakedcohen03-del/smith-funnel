@@ -3,6 +3,11 @@
     "fra1"
   ],
   "cleanUrls": true,
+  "functions": {
+    "api/gift-plan.js": {
+      "maxDuration": 60
+    }
+  },
   "redirects": [
     {
       "source": "/",
