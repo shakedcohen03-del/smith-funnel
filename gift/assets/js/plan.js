@@ -57,8 +57,8 @@
       <p class="eyebrow">${chip}</p>
       <h1 class="h1">תוכנית ${words.goal} ${words.who} ${words.place}, <u>שנכנסת לחיים העמוסים שלך</u></h1>
       <div class="coach"><img src="/gift/assets/img/smith/coach-640.webp" alt="סמית'" width="44" height="44"><span><strong>הצוות של סמית'</strong> · התפריט והאימונים נבנו לפי התשובות שלך בשאלון. מתחילים היום.</span></div>
-      <a class="doclink" href="${V.slug}/menu${qs}"><span class="doclink__ico">${ico('i-menu')}</span><span><strong>לתפריט התזונה שלך</strong>מחושב לפי הגובה, המשקל והגיל שלך</span>${ico('i-next')}</a>
-      <a class="doclink" href="${V.slug}/training${qs}"><span class="doclink__ico">${ico('i-train')}</span><span><strong>לתוכנית האימונים שלך</strong>${V.gym ? '3 אימונים בשבוע בחדר הכושר' : '3 אימונים בשבוע בבית, בלי ציוד'}</span>${ico('i-next')}</a>
+      <a class="doclink" href="/api/gift-pdf?slug=${encodeURIComponent(fetchSlug)}" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-menu')}</span><span><strong>להורדת תפריט ה${words.goal} ${words.who}</strong>קובץ PDF, הקלוריות שלך כבר מחושבות בעמוד הראשון</span>${ico('i-next')}</a>
+      <a class="doclink" href="/gift/assets/pdf/training-${m[1]}-${V.gym ? 'gym' : 'home'}.pdf" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-train')}</span><span><strong>להורדת תוכנית האימון ${words.who} ${words.place}</strong>קובץ PDF, ${V.gym ? '3 אימונים בשבוע בחדר הכושר' : '3 אימונים בשבוע בבית, במשקל גוף'}</span>${ico('i-next')}</a>
       ${offerForm()}
     </main>`;
     bindOffer();
