@@ -850,3 +850,5 @@ body { background: var(--bg); color: var(--text); }
   .hero__intro .lead { grid-column: 1; }
 }
 @media (min-width: 600px) and (max-width: 999px) { .hero__intro { grid-template-columns: minmax(0, 1fr) 260px; column-gap: 24px; } }
+/* "שני גברים, בעיה אחת": שתי עמודות שוות */
+@media (min-width: 800px) { .fit--even { grid-template-columns: 1fr 1fr; align-items: stretch; } }
