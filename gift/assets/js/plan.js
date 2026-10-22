@@ -1,11 +1,12 @@
-// Plan pages sent on WhatsApp: /gift/plan/<man|woman>-<weight-loss|mass>[-no-gym][-<height>-<weight>-<age>][/menu|/training]
+// Plan pages sent on WhatsApp: /gift/plan/<man|woman>-<weight-loss|mass>[-no-gym][-<height>-<weight>-<age>][-t<token>][/menu|/training]
+// The token (10 chars, from the CRM) rides on the PDF links, so the first open of each PDF is noted on the lead's card.
 (function () {
   const $ = (s, r = document) => r.querySelector(s);
   const app = $('#app');
-  const m = location.pathname.match(/^\/gift\/plan\/(man|woman)-(weight-loss|mass)(-no-gym)?(?:-(\d{3})-(\d{2,3})-(\d{2}))?(?:\/(menu|training))?\/?$/);
+  const m = location.pathname.match(/^\/gift\/plan\/(man|woman)-(weight-loss|mass)(-no-gym)?(?:-(\d{3})-(\d{2,3})-(\d{2}))?(?:-t([a-z0-9]{10}))?(?:\/(menu|training))?\/?$/);
   if (!m) { app.innerHTML = '<main class="wrap offer"><h1 class="h1">הקישור לא תקין</h1><a class="btn" href="/gift">לשאלון</a></main>'; return; }
-  const V = { male: m[1] === 'man', cut: m[2] === 'weight-loss', gym: !m[3], page: m[7] || 'plan' };
-  V.slug = `/gift/plan/${m[1]}-${m[2]}${m[3] || ''}${m[4] ? `-${m[4]}-${m[5]}-${m[6]}` : ''}`;
+  const V = { male: m[1] === 'man', cut: m[2] === 'weight-loss', gym: !m[3], page: m[8] || 'plan', token: m[7] || '' };
+  V.slug = `/gift/plan/${m[1]}-${m[2]}${m[3] || ''}${m[4] ? `-${m[4]}-${m[5]}-${m[6]}` : ''}${m[7] ? `-t${m[7]}` : ''}`;
   const q = new URLSearchParams(location.search);
   const person = {
     h: Number(m[4] || q.get('h')) || (V.male ? 178 : 165),
@@ -57,8 +58,8 @@
       <p class="eyebrow">${chip}</p>
       <h1 class="h1">תוכנית ${words.goal} ${words.who} ${words.place}, <u>שנכנסת לחיים העמוסים שלך</u></h1>
       <div class="coach"><img src="/gift/assets/img/smith/coach-640.webp" alt="סמית'" width="44" height="44"><span><strong>הצוות של סמית'</strong> · התפריט והאימונים נבנו לפי התשובות שלך בשאלון. מתחילים היום.</span></div>
-      <a class="doclink" href="/api/gift-pdf?slug=${encodeURIComponent(fetchSlug)}" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-menu')}</span><span><strong>להורדת תפריט ה${words.goal} ${words.who}</strong>קובץ PDF, הקלוריות שלך כבר מחושבות בעמוד הראשון</span>${ico('i-next')}</a>
-      <a class="doclink" href="/gift/assets/pdf/training-${m[1]}-${V.gym ? 'gym' : 'home'}.pdf" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-train')}</span><span><strong>להורדת תוכנית האימון ${words.who} ${words.place}</strong>קובץ PDF, ${V.gym ? '3 אימונים בשבוע בחדר הכושר' : '3 אימונים בשבוע בבית, במשקל גוף'}</span>${ico('i-next')}</a>
+      <a class="doclink" href="/api/gift-pdf?slug=${encodeURIComponent(fetchSlug)}${V.token ? `&t=${V.token}` : ''}" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-menu')}</span><span><strong>להורדת תפריט ה${words.goal} ${words.who}</strong>קובץ PDF, הקלוריות שלך כבר מחושבות בעמוד הראשון</span>${ico('i-next')}</a>
+      <a class="doclink" href="/api/gift-pdf?kind=training&slug=${encodeURIComponent(fetchSlug)}${V.token ? `&t=${V.token}` : ''}" target="_blank" rel="noopener"><span class="doclink__ico">${ico('i-train')}</span><span><strong>להורדת תוכנית האימון ${words.who} ${words.place}</strong>קובץ PDF, ${V.gym ? '3 אימונים בשבוע בחדר הכושר' : '3 אימונים בשבוע בבית, במשקל גוף'}</span>${ico('i-next')}</a>
       ${offerForm()}
     </main>`;
     bindOffer();

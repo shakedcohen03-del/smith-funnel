@@ -364,7 +364,14 @@ body { font-size: 18px; }
 
 /* main landing page (/lp) */
 .topbar { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin: 0; padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px; border: 0; background: var(--gold); color: var(--ink); font-size: 16px; font-weight: 800; line-height: 1.35; text-align: center; cursor: pointer; }
+.topbar span { flex: 1; text-align: right; }
+.topbar b { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; background: var(--pine-d); color: #fff; font-size: 16px; font-weight: 800; box-shadow: 0 0 0 3px rgba(2, 28, 66, .22), 0 6px 14px rgba(2, 28, 66, .35); animation: tbPulse 2.2s ease-in-out infinite; }
 .topbar .ico { flex: none; font-size: 18px; }
+.topbar b .ico { color: var(--gold-2); }
+.topbar:hover b { background: var(--pine-2); }
+@keyframes tbPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .topbar b { animation: none; } }
+@media (min-width: 760px) { .topbar { gap: 18px; } .topbar span { flex: 0 1 auto; } }
 .hero { padding-block: 28px 44px; display: grid; gap: 22px; justify-items: center; }
 .hero .video { width: 100%; }
 .hero__sub { margin: 0; text-align: center; font-size: 20px; font-weight: 600; line-height: 1.45; color: var(--sage-2); text-wrap: balance; }
