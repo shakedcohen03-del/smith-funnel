@@ -180,6 +180,9 @@ select.field option { color: var(--ink); }
 .video__bar time { font-variant-numeric: tabular-nums; color: var(--sage); font-weight: 500; }
 .video__frame { position: relative; aspect-ratio: 16 / 9; background: #000; }
 .video__frame.tall { aspect-ratio: 9 / 14; }
+/* the brand video is 9:16: full width on a phone, at most 400px wide on a desktop */
+.video__frame.vert { aspect-ratio: 9 / 16; }
+.video--vert { width: 100%; max-width: 400px; justify-self: center; margin-inline: auto; }
 .video__frame video, .video__frame iframe, .video__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
 .video__frame video { object-fit: contain; }
 .play { position: absolute; inset: 0; display: grid; place-items: center; border: 0; background: linear-gradient(0deg, rgba(0, 0, 0, .35), transparent 60%); cursor: pointer; }
