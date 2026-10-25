@@ -6,7 +6,7 @@ import { proxy, clip, param, normalizeIsraeliMobile } from './_lib.js';
 
 const SLUG_RE = /^(man|woman)-(weight-loss|mass)(-no-gym)?-\d{3}-\d{2,3}-\d{2}$/;
 const QUIZ_KEYS = ['gender', 'goal', 'gym', 'height', 'weight', 'age', 'status', 'why', 'kg', 'tried', 'follow', 'weekend'];
-const CALL_KEYS = ['tried', 'now'];
+const CALL_KEYS = ['tried', 'now', 'from'];
 const TRACKING_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'ref', 'lead_event_id'];
 const STAGES = ['quiz', 'call', 'lp', 'lp_quiz'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

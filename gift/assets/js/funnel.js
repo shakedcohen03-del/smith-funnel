@@ -147,7 +147,7 @@
     oSubmit.classList.add('is-off'); oSubmit.textContent = 'רגע...';
     const f = new FormData(offer);
     const ev = window.Px.uuid(), who = { name: f.get('name'), phone: digits(f.get('phone')) };
-    const r = await window.GiftApi.send({ stage: 'call', ...who, call: { tried: f.get('tried'), now: f.get('now') } }, ev);
+    const r = await window.GiftApi.send({ stage: 'call', ...who, call: { tried: f.get('tried'), now: f.get('now'), from: 'offer' } }, ev);
     if (!r.ok) return failed(oSubmit, label, r.message);
     window.Px.track('CompleteRegistration', who, ev);
     show('thanks', true);

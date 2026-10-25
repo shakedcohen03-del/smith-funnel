@@ -150,7 +150,7 @@
       const label = btn.textContent, f = new FormData(form);
       btn.classList.add('is-off'); btn.textContent = 'רגע...';
       const ev = window.Px.uuid(), who = { name: f.get('name'), phone: digits(f.get('phone')) };
-      window.GiftApi.send({ stage: 'call', ...who, call: { tried: f.get('tried'), now: f.get('now') } }, ev).then(r => {
+      window.GiftApi.send({ stage: 'call', ...who, call: { tried: f.get('tried'), now: f.get('now'), from: 'plan' } }, ev).then(r => {
         if (r.ok) { window.Px.track('CompleteRegistration', who, ev); setTimeout(() => { location.href = '/gift/thanks'; }, 300); return; }
         btn.classList.remove('is-off'); btn.textContent = label;
         let p = form.querySelector('.form-err');
