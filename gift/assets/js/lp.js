@@ -135,6 +135,15 @@
     show('done', true);
   });
 
+  /* ---------- VSL: no controls, so the length and the time left never show (owner 26.10, like Niro's player) ---------- */
+  $$('[data-vsl]').forEach(box => {
+    const v = $('video', box), btn = $('.play', box);
+    box.addEventListener('click', () => (v.paused ? v.play() : v.pause()));
+    box.addEventListener('contextmenu', e => e.preventDefault());
+    v.addEventListener('play', () => { btn.hidden = true; });
+    v.addEventListener('pause', () => { btn.hidden = false; });
+  });
+
   /* ---------- cookie note (closes for this visit only) ---------- */
   $('#cookie-x').addEventListener('click', () => { $('#cookie').hidden = true; });
 
