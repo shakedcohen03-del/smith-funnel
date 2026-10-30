@@ -88,6 +88,10 @@ export function pixelBoot() {
   else addEventListener("load", () => setTimeout(load, 300), { once: true });
 }
 
+// Lead אחד לביקור: מי שהשאיר פרטים וגם לחץ על הוואטסאפ הוא ליד אחד
+let leadSent = false;
+let whatsappSent = false;
+
 export function pixelLead(user, eventID) {
   if (!pixelOn || !window.fbq) return;
   const [fn, ...rest] = (user.name || "").trim().toLowerCase().split(/\s+/);
@@ -98,6 +102,17 @@ export function pixelLead(user, eventID) {
   if (rest.length) am.ln = rest.join(" ");
   window.fbq("init", PIXEL_ID, am);
   window.fbq("track", "Lead", {}, { eventID });
+  leadSent = true;
+}
+
+// לחיצה על כפתור הוואטסאפ: Lead, כי על זה הקמפיינים מתאפטמים (Contact תפוס: ה-CRM שולח אותו על שיחת מכירה שהתקיימה),
+// ובנוסף WhatsAppClick, כדי שב-Events Manager יראו כמה לחצו
+export function pixelWhatsApp() {
+  if (!pixelOn || !window.fbq || whatsappSent) return;
+  whatsappSent = true;
+  if (!leadSent) window.fbq("track", "Lead", { content_name: "whatsapp_click" });
+  leadSent = true;
+  window.fbq("trackCustom", "WhatsAppClick");
 }
 
 export function pixelComplete(eventID) {

@@ -1,7 +1,12 @@
 // הטופס בדף (#apply): שם, טלפון, מייל ואישור תוכן שיווקי (הגולש מסמן בעצמו), כולם חובה. שולח ליד ל-/api/lead.
-import { attribution, tracking, pixelBoot, pixelLead, uuid } from "./tracking.js";
+import { attribution, tracking, pixelBoot, pixelLead, pixelWhatsApp, uuid } from "./tracking.js";
 
 pixelBoot();
+
+// כפתור הוואטסאפ: האירוע יוצא בלחיצה עצמה, והקישור נפתח כרגיל
+document.addEventListener("click", (e) => {
+  if (e.target.closest?.('a[href*="wa.me/"]')) pixelWhatsApp();
+});
 
 const form = document.getElementById("apply-form");
 const body = document.getElementById("apply-body");
